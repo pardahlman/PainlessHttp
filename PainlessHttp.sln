@@ -9,6 +9,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{650C8860
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.Tests", "PainlessHttp.Tests\PainlessHttp.Tests.csproj", "{3BCFB007-09A5-4FBD-9382-E2A5E364F970}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{78A5AA8A-146B-482A-A680-D6179FD129F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.Sandbox", "PainlessHttp.Sandbox\PainlessHttp.Sandbox.csproj", "{E383E517-2F67-40E8-B9F3-A82473A5F006}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.DevServer", "PainlessHttp.DevServer\PainlessHttp.DevServer.csproj", "{C7256164-4D19-40BE-9CA6-42C3CB8EB164}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,11 +29,21 @@ Global
 		{3BCFB007-09A5-4FBD-9382-E2A5E364F970}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BCFB007-09A5-4FBD-9382-E2A5E364F970}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BCFB007-09A5-4FBD-9382-E2A5E364F970}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E383E517-2F67-40E8-B9F3-A82473A5F006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E383E517-2F67-40E8-B9F3-A82473A5F006}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E383E517-2F67-40E8-B9F3-A82473A5F006}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E383E517-2F67-40E8-B9F3-A82473A5F006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7256164-4D19-40BE-9CA6-42C3CB8EB164}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7256164-4D19-40BE-9CA6-42C3CB8EB164}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7256164-4D19-40BE-9CA6-42C3CB8EB164}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7256164-4D19-40BE-9CA6-42C3CB8EB164}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3BCFB007-09A5-4FBD-9382-E2A5E364F970} = {650C8860-9DDF-42CB-B219-D0DC34F46BF6}
+		{E383E517-2F67-40E8-B9F3-A82473A5F006} = {78A5AA8A-146B-482A-A680-D6179FD129F5}
+		{C7256164-4D19-40BE-9CA6-42C3CB8EB164} = {78A5AA8A-146B-482A-A680-D6179FD129F5}
 	EndGlobalSection
 EndGlobal
