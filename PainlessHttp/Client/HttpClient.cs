@@ -25,7 +25,7 @@ namespace PainlessHttp.Client
 			httpWebRequest.AllowAutoRedirect = true;
 			httpWebRequest.ContentType = ContentTypeConverter.ConvertToString(type);
 			httpWebRequest.UserAgent = "Painless Http Client";
-			httpWebRequest.Method = "GET";
+			httpWebRequest.Method = HttpMethods.Get;
 
 			var response = (HttpWebResponse)httpWebRequest.GetResponse();
 			var responseStream = response.GetResponseStream();
