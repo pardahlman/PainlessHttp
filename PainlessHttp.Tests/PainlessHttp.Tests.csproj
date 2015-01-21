@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1719F085-34F2-48B6-AD2E-98B67856B3B0}</ProjectGuid>
+    <ProjectGuid>{3BCFB007-09A5-4FBD-9382-E2A5E364F970}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PainlessHttp</RootNamespace>
-    <AssemblyName>PainlessHttp</AssemblyName>
+    <RootNamespace>PainlessHttp.Tests</RootNamespace>
+    <AssemblyName>PainlessHttp.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
