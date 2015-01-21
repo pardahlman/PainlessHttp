@@ -6,6 +6,7 @@ using PainlessHttp.Client.Configuration;
 using PainlessHttp.Client.Contracts;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
+using PainlessHttp.Utils;
 
 namespace PainlessHttp.Client
 {
@@ -22,7 +23,7 @@ namespace PainlessHttp.Client
 		{
 			var httpWebRequest = (HttpWebRequest)WebRequest.Create(string.Format("{0}{1}", _config.BaseUrl, url));
 			httpWebRequest.AllowAutoRedirect = true;
-			httpWebRequest.ContentType = "application/json";
+			httpWebRequest.ContentType = ContentTypeConverter.ConvertToString(type);
 			httpWebRequest.UserAgent = "Painless Http Client";
 			httpWebRequest.Method = "GET";
 
