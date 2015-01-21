@@ -5,7 +5,7 @@ using PainlessHttp.Utils;
 
 namespace PainlessHttp.Tests.Utils
 {
-	public class ContentTypeConverterTests
+	public class HttpConverterTests
 	{
 		[Test]
 		public void ShouldThrowExceptionIfContentTypeIsUnknown()
@@ -14,7 +14,7 @@ namespace PainlessHttp.Tests.Utils
 			var type = ContentType.Unknown;
 
 			/* Test & Assert */
-			Assert.Throws<ArgumentException>(() => ContentTypeConverter.ConvertToString(type));
+			Assert.Throws<ArgumentException>(() => HttpConverter.ContentType(type));
 		}
 
 		[Test]
@@ -24,7 +24,7 @@ namespace PainlessHttp.Tests.Utils
 			const string nonMatch = "This is not a content type";
 
 			/* Test & Assert */
-			Assert.Throws<ArgumentException>(() => ContentTypeConverter.ConvertToEnum(nonMatch));
+			Assert.Throws<ArgumentException>(() => HttpConverter.ContentType(nonMatch));
 		}
 
 		[TestCase(ContentType.ApplicationJson, ContentTypes.ApplicationJson)]
@@ -36,7 +36,7 @@ namespace PainlessHttp.Tests.Utils
 		{
 			/* Setup */
 			/* Test */
-			var result = ContentTypeConverter.ConvertToString(type);
+			var result = HttpConverter.ContentType(type);
 
 			/* Assert */
 			Assert.That(result, Is.EqualTo(expectedResult));
@@ -51,7 +51,7 @@ namespace PainlessHttp.Tests.Utils
 		{
 			/* Setup */
 			/* Test */
-			var result = ContentTypeConverter.ConvertToEnum(type);
+			var result = HttpConverter.ContentType(type);
 
 			/* Assert */
 			Assert.That(result, Is.EqualTo(expectedResult));
