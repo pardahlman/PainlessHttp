@@ -1,4 +1,6 @@
-﻿namespace PainlessHttp.Http.Contracts
+﻿using System.Net;
+
+namespace PainlessHttp.Http.Contracts
 {
 	public interface IHttpResponse
 	{

@@ -43,7 +43,6 @@
     <Compile Include="Client\HttpClient.cs" />
     <Compile Include="Http\ContentType.cs" />
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
-    <Compile Include="Http\HttpStatusCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
