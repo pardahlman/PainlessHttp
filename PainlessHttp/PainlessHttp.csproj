@@ -43,6 +43,7 @@
     <Compile Include="Client\Contracts\IHttpClient.cs" />
     <Compile Include="Client\HttpClient.cs" />
     <Compile Include="Http\ContentType.cs" />
+    <Compile Include="Http\ContentTypes.cs" />
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
