@@ -32,7 +32,7 @@ namespace PainlessHttp.Tests.Utils
 		[TestCase(ContentType.TextPlain, ContentTypes.TextPlain)]
 		[TestCase(ContentType.TextCsv, ContentTypes.TextCsv)]
 		[TestCase(ContentType.TextHtml, ContentTypes.TextHtml)]
-		public void ShouldConvertEnumsToStrings(ContentType type, string expectedResult)
+		public void ShouldConvertContentTypeEnumsToStrings(ContentType type, string expectedResult)
 		{
 			/* Setup */
 			/* Test */
@@ -47,11 +47,39 @@ namespace PainlessHttp.Tests.Utils
 		[TestCase(ContentTypes.TextPlain, ContentType.TextPlain)]
 		[TestCase(ContentTypes.TextCsv, ContentType.TextCsv)]
 		[TestCase(ContentTypes.TextHtml, ContentType.TextHtml)]
-		public void ShouldConvertStringToEnum(string type, ContentType expectedResult)
+		public void ShouldConvertContentTypeStringToEnum(string type, ContentType expectedResult)
 		{
 			/* Setup */
 			/* Test */
 			var result = HttpConverter.ContentType(type);
+
+			/* Assert */
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[TestCase(HttpMethod.Get, HttpMethods.Get)]
+		[TestCase(HttpMethod.Post, HttpMethods.Post)]
+		[TestCase(HttpMethod.Put, HttpMethods.Put)]
+		[TestCase(HttpMethod.Delete, HttpMethods.Delete)]
+		public void ShouldConvertMethodEnumToString(HttpMethod method, string expectedResult)
+		{
+			/* Setup */
+			/* Test */
+			var result = HttpConverter.HttpMethod(method);
+
+			/* Assert */
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[TestCase(HttpMethods.Get, HttpMethod.Get)]
+		[TestCase(HttpMethods.Post, HttpMethod.Post)]
+		[TestCase(HttpMethods.Put, HttpMethod.Put)]
+		[TestCase(HttpMethods.Delete, HttpMethod.Delete)]
+		public void ShouldConvertMethodStringToEnum(string method, HttpMethod expectedResult)
+		{
+			/* Setup */
+			/* Test */
+			var result = HttpConverter.HttpMethod(method);
 
 			/* Assert */
 			Assert.That(result, Is.EqualTo(expectedResult));

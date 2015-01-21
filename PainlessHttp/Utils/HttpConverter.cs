@@ -16,6 +16,14 @@ namespace PainlessHttp.Utils
 			new Tuple<ContentType, string>(Http.ContentType.TextHtml, Http.ContentTypes.TextHtml),
 			new Tuple<ContentType, string>(Http.ContentType.TextPlain, Http.ContentTypes.TextPlain),
 		};
+
+		static readonly List<Tuple<HttpMethod, string>> Methods = new List<Tuple<HttpMethod, string>>
+		{
+			new Tuple<HttpMethod, string>(Http.HttpMethod.Get, HttpMethods.Get),
+			new Tuple<HttpMethod, string>(Http.HttpMethod.Post, HttpMethods.Post),
+			new Tuple<HttpMethod, string>(Http.HttpMethod.Put, HttpMethods.Put),
+			new Tuple<HttpMethod, string>(Http.HttpMethod.Delete, HttpMethods.Delete),
+		};
 	
 		public static string ContentType(ContentType type)
 		{
@@ -45,6 +53,36 @@ namespace PainlessHttp.Utils
 			}
 
 			throw new ArgumentException(string.Format("Unable to convert content type {0} to enum.", type));
+		}
+
+		public static HttpMethod HttpMethod(string method)
+		{
+			var result = Methods
+								.Where(hm => hm.Item2 == method)
+								.Select(hm => hm.Item1)
+								.FirstOrDefault();
+
+			if (result != Http.HttpMethod.Unknown)
+			{
+				return result;
+			}
+
+			throw new ArgumentException(string.Format("Unable to convert method {0} to string.", method));
+		}
+
+		public static string HttpMethod(HttpMethod method)
+		{
+			var result = Methods
+								.Where(hm => hm.Item1 == method)
+								.Select(hm => hm.Item2)
+								.FirstOrDefault();
+
+			if (!string.IsNullOrWhiteSpace(result))
+			{
+				return result;
+			}
+
+			throw new ArgumentException(string.Format("Unable to convert string {0} to method.", method));
 		}
 	}
 }
