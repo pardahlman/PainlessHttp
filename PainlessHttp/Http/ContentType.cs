@@ -4,6 +4,10 @@ namespace PainlessHttp.Http
 	{
 		Unknown,
 		Default,
-		ApplicationJson
+		ApplicationJson,
+		ApplicationXml,
+		TextPlain,
+		TextCsv,
+		TextHtml
 	}
 }
