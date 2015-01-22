@@ -55,7 +55,6 @@ namespace PainlessHttp.Utils
 
 			return new RequestWrapper(createFunc);
 		}
-
 	}
 
 	public class RequestWrapper
@@ -67,9 +66,10 @@ namespace PainlessHttp.Utils
 			_createFunc = createFunc;
 		}
 
-		public HttpWebResponse Perform()
+		public IHttpWebResponse Perform()
 		{
-			return (HttpWebResponse)_createFunc().GetResponse();
+			var actual = (System.Net.HttpWebResponse)_createFunc().GetResponse();
+			return new HttpWebResponse(actual);
 		}
 	}
 }
