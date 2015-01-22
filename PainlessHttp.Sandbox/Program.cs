@@ -1,5 +1,7 @@
-﻿using PainlessHttp.Client;
+﻿using System.Collections.Generic;
+using PainlessHttp.Client;
 using PainlessHttp.Client.Configuration;
+using PainlessHttp.DevServer.Model;
 
 namespace PainlessHttp.Sandbox
 {
@@ -13,7 +15,7 @@ namespace PainlessHttp.Sandbox
 			};
 
 			var client = new HttpClient(config);
-			var raw = client.Get("api/todos");
+			var raw = client.Get<List<Todo>>("api/todos");
 		}
 	}
 }
