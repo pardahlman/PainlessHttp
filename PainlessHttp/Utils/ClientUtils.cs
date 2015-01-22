@@ -24,7 +24,7 @@ namespace PainlessHttp.Utils
 			return string.Format("{0} {1}", _painlessAgent, _version);
 		}
 
-		public static async Task<string> ReadBodyAsync(HttpWebResponse response)
+		public static async Task<string> ReadBodyAsync(IHttpWebResponse response)
 		{
 			var responseStream = response.GetResponseStream();
 			if (responseStream == null)
@@ -39,7 +39,7 @@ namespace PainlessHttp.Utils
 			}
 			return raw;
 		}
-		public async static Task<T> ParseBodyAsync<T>(HttpWebResponse response)
+		public async static Task<T> ParseBodyAsync<T>(IHttpWebResponse response)
 		{
 			var readTask = ReadBodyAsync(response);
 			var deserializeTask = await readTask.ContinueWith(task =>
