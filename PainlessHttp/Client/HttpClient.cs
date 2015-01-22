@@ -27,11 +27,29 @@ namespace PainlessHttp.Client
 
 		public async Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null) where T : class
 		{
+			var response = await PerformRequestAsync<T>(HttpMethod.Get, url, query);
+			return response;
+		}
+
+		public IHttpResponse<T> Post<T>(string url, object data, object query = null) where T : class
+		{
+			return PostAsync<T>(url, data, query).Result;
+		}
+
+		public async Task<IHttpResponse<T>> PostAsync<T>(string url, object data, object query = null) where T : class
+		{
+			var response = await PerformRequestAsync<T>(HttpMethod.Post, url, query, ContentType.ApplicationJson, data);
+			return response;
+		}
+
+		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Unknown, object data = null)where T : class 
+		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
 			var request = _requestWrapper
 				.WithUrl(fullUrl)
-				.WithMethod(HttpMethod.Get)
+				.WithMethod(method)
+				.WithPayload(data, type)
 				.Prepare();
 
 			var response = request.Perform();
@@ -48,6 +66,5 @@ namespace PainlessHttp.Client
 				return result;
 			});
 		}
-
 	}
 }

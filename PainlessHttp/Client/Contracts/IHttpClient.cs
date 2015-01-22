@@ -8,5 +8,8 @@ namespace PainlessHttp.Client.Contracts
 	{
 		IHttpResponse<T> Get<T>(string url, object query = null) where T : class;
 		Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null) where T : class;
+
+		IHttpResponse<T> Post<T>(string url, object data, object query = null) where T : class;
+		Task<IHttpResponse<T>> PostAsync<T>(string url, object data, object query = null) where T : class;
 	}
 }
