@@ -6,6 +6,7 @@
 		Get,
 		Post,
 		Put,
-		Delete
+		Delete,
+		Options
 	}
 }

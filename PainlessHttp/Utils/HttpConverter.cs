@@ -23,6 +23,7 @@ namespace PainlessHttp.Utils
 			new Tuple<HttpMethod, string>(Http.HttpMethod.Post, HttpMethods.Post),
 			new Tuple<HttpMethod, string>(Http.HttpMethod.Put, HttpMethods.Put),
 			new Tuple<HttpMethod, string>(Http.HttpMethod.Delete, HttpMethods.Delete),
+			new Tuple<HttpMethod, string>(Http.HttpMethod.Options, HttpMethods.Options),
 		};
 	
 		public static string ContentType(ContentType type)
