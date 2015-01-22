@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using PainlessHttp.Client.Configuration;
 using PainlessHttp.Client.Contracts;
 using PainlessHttp.Http;
@@ -13,44 +10,62 @@ namespace PainlessHttp.Client
 	public class HttpClient : IHttpClient
 	{
 		private readonly HttpClientConfiguration _config;
+		private readonly UrlBuilder _urlBuilder;
 
 		public HttpClient(HttpClientConfiguration config)
 		{
 			_config = config;
+			_urlBuilder = new UrlBuilder(config.BaseUrl);
 		}
 
-		public IHttpResponse Get(string url, ContentType type = ContentType.ApplicationJson, object query = null)
+		public IHttpResponse Get(string url, object query = null)
 		{
-			var httpWebRequest = (HttpWebRequest)WebRequest.Create(string.Format("{0}{1}", _config.BaseUrl, url));
-			httpWebRequest.AllowAutoRedirect = true;
-			httpWebRequest.ContentType = ContentTypeConverter.ConvertToString(type);
-			httpWebRequest.UserAgent = "Painless Http Client";
-			httpWebRequest.Method = HttpMethods.Get;
+			var fullUrl = _urlBuilder.Build(url, query);
 
-			var response = (HttpWebResponse)httpWebRequest.GetResponse();
-			var responseStream = response.GetResponseStream();
+			var request = WebRequestWrapper
+				.WithUrl(fullUrl)
+				.WithMethod(HttpMethod.Get)
+				.Prepare();
 
-			string raw;
-			using (var reader = new StreamReader(responseStream))
-			{
-				raw = reader.ReadToEnd();
-			}
+			var response = request.Perform();
+
+			var payload = ClientUtils.ReadBodyAsync(response).Result;
 
 			return new HttpResponse
 			{
 				StatusCode = response.StatusCode,
-				RawContent = raw
+				RawContent = payload
 			};
 		}
 
-		public IHttpResponse<T> Get<T>(string url, ContentType type, object query = null)
+		public IHttpResponse<T> Get<T>(string url, object query = null)
 		{
-			throw new NotImplementedException();
+			return GetAsync<T>(url, query).Result;
 		}
 
-		public Task<IHttpResponse<T>> GetAsync<T>(string url, ContentType type, object query = null)
+		public async Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null)
 		{
-			throw new NotImplementedException();
+			var fullUrl = _urlBuilder.Build(url, query);
+
+			var request = WebRequestWrapper
+				.WithUrl(fullUrl)
+				.WithMethod(HttpMethod.Get)
+				.Prepare();
+
+			var response = request.Perform();
+
+			var payloadTask = ClientUtils.ParseBodyAsync<T>(response);
+
+			return await payloadTask.ContinueWith(task =>
+			{
+				IHttpResponse<T> result = new HttpResponse<T>
+				{
+					StatusCode = response.StatusCode,
+					Body = payloadTask.Result
+				};
+				return result;
+			});
 		}
+
 	}
 }
