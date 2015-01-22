@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using PainlessHttp.Http;
 
 namespace PainlessHttp.Utils
@@ -20,6 +21,7 @@ namespace PainlessHttp.Utils
 		private readonly string _url;
 		private string _method;
 		private string _contentType;
+		private object _data;
 
 		internal FluentWebRequestBuilder(string accept, string url)
 		{
@@ -35,6 +37,10 @@ namespace PainlessHttp.Utils
 
 		public FluentWebRequestBuilder WithPayload(object data, ContentType type)
 		{
+			if (data == null)
+				return this;
+
+			_data = data;
 			_contentType = HttpConverter.ContentType(type);
 			return this;
 		}
@@ -48,8 +54,16 @@ namespace PainlessHttp.Utils
 				httpWebRequest.UserAgent = ClientUtils.GetUserAgent();
 				httpWebRequest.Method = _method;
 				httpWebRequest.Accept = _accept;
-				httpWebRequest.ContentType = _contentType;
 
+				if (_data != null)
+				{
+					httpWebRequest.ContentType = _contentType;
+					var payloadAsBytes = Encoding.UTF8.GetBytes(_data.ToString());
+					httpWebRequest.ContentLength = payloadAsBytes.Length;
+					var postStream = httpWebRequest.GetRequestStream();
+					postStream.Write(payloadAsBytes, 0, payloadAsBytes.Length);
+					postStream.Close();
+				}
 				return httpWebRequest;
 			};
 
