@@ -11,7 +11,7 @@ namespace PainlessHttp.Client
 	{
 		private readonly HttpClientConfiguration _config;
 		private readonly UrlBuilder _urlBuilder;
-		private WebRequestWrapper _requestWrapper;
+		private readonly WebRequestWrapper _requestWrapper;
 
 		public HttpClient(HttpClientConfiguration config)
 		{
@@ -20,32 +20,12 @@ namespace PainlessHttp.Client
 			_requestWrapper = new WebRequestWrapper();
 		}
 
-		public IHttpResponse Get(string url, object query = null)
-		{
-			var fullUrl = _urlBuilder.Build(url, query);
-
-			var request = _requestWrapper
-				.WithUrl(fullUrl)
-				.WithMethod(HttpMethod.Get)
-				.Prepare();
-
-			var response = request.Perform();
-
-			var payload = ClientUtils.ReadBodyAsync(response).Result;
-
-			return new HttpResponse
-			{
-				StatusCode = response.StatusCode,
-				RawContent = payload
-			};
-		}
-
-		public IHttpResponse<T> Get<T>(string url, object query = null)
+		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 
 		{
 			return GetAsync<T>(url, query).Result;
 		}
 
-		public async Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null)
+		public async Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null) where T : class
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
@@ -63,7 +43,7 @@ namespace PainlessHttp.Client
 				IHttpResponse<T> result = new HttpResponse<T>
 				{
 					StatusCode = response.StatusCode,
-					Body = payloadTask.Result
+					Body = task.Result
 				};
 				return result;
 			});

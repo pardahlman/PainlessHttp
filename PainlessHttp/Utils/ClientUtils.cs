@@ -39,11 +39,15 @@ namespace PainlessHttp.Utils
 			}
 			return raw;
 		}
-		public async static Task<T> ParseBodyAsync<T>(IHttpWebResponse response)
+		public async static Task<T> ParseBodyAsync<T>(IHttpWebResponse response) where T : class
 		{
 			var readTask = ReadBodyAsync(response);
 			var deserializeTask = await readTask.ContinueWith(task =>
 							{
+								if (typeof (T) == typeof (string))
+								{
+									return task.Result as T;
+								}
 								var body = task.Result;
 								var typedBody = JsonConvert.DeserializeObject<T>(body);
 								return typedBody;

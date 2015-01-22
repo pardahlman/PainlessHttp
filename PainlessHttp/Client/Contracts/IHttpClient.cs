@@ -6,8 +6,7 @@ namespace PainlessHttp.Client.Contracts
 {
 	interface IHttpClient
 	{
-		IHttpResponse Get(string url, object query = null);
-		IHttpResponse<T> Get<T>(string url, object query = null);
-		Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null);
+		IHttpResponse<T> Get<T>(string url, object query = null) where T : class;
+		Task<IHttpResponse<T>> GetAsync<T>(string url, object query = null) where T : class;
 	}
 }
