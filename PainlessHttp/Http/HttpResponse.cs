@@ -8,4 +8,10 @@ namespace PainlessHttp.Http
 		public HttpStatusCode StatusCode { get; set; }
 		public string RawContent { get; set; }
 	}
+
+	public class HttpResponse<T> : IHttpResponse<T>
+	{
+		public HttpStatusCode StatusCode { get; set; }
+		public T Body { get; set; }
+	}
 }
