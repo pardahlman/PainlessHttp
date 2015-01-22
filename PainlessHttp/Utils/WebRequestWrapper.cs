@@ -6,29 +6,34 @@ namespace PainlessHttp.Utils
 {
 	public class WebRequestWrapper
 	{
-		//private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
-		private readonly string _accept = ContentTypes.ApplicationJson;
+		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
+
+		public FluentWebRequestBuilder WithUrl(string url)
+		{
+			return new FluentWebRequestBuilder(_accept, url);
+		}
+	}
+
+	public class FluentWebRequestBuilder
+	{
+		private readonly string _accept;
 		private readonly string _url;
 		private string _method;
 		private string _contentType;
 
-		private WebRequestWrapper(string url)
+		internal FluentWebRequestBuilder(string accept, string url)
 		{
+			_accept = accept;
 			_url = url;
 		}
 
-		public static WebRequestWrapper WithUrl(string url)
-		{
-			return new WebRequestWrapper(url);
-		}
-
-		public WebRequestWrapper WithMethod(HttpMethod method)
+		public FluentWebRequestBuilder WithMethod(HttpMethod method)
 		{
 			_method = HttpConverter.HttpMethod(method);
 			return this;
 		}
 
-		public WebRequestWrapper WithPayload(object data, ContentType type)
+		public FluentWebRequestBuilder WithPayload(object data, ContentType type)
 		{
 			_contentType = HttpConverter.ContentType(type);
 			return this;
@@ -38,7 +43,7 @@ namespace PainlessHttp.Utils
 		{
 			Func<HttpWebRequest> createFunc = () =>
 			{
-				var httpWebRequest = (HttpWebRequest) WebRequest.Create(_url);
+				var httpWebRequest = (HttpWebRequest)WebRequest.Create(_url);
 				httpWebRequest.AllowAutoRedirect = true;
 				httpWebRequest.UserAgent = ClientUtils.GetUserAgent();
 				httpWebRequest.Method = _method;
@@ -50,6 +55,7 @@ namespace PainlessHttp.Utils
 
 			return new RequestWrapper(createFunc);
 		}
+
 	}
 
 	public class RequestWrapper

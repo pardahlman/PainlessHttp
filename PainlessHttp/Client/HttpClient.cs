@@ -11,18 +11,20 @@ namespace PainlessHttp.Client
 	{
 		private readonly HttpClientConfiguration _config;
 		private readonly UrlBuilder _urlBuilder;
+		private WebRequestWrapper _requestWrapper;
 
 		public HttpClient(HttpClientConfiguration config)
 		{
 			_config = config;
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
+			_requestWrapper = new WebRequestWrapper();
 		}
 
 		public IHttpResponse Get(string url, object query = null)
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
-			var request = WebRequestWrapper
+			var request = _requestWrapper
 				.WithUrl(fullUrl)
 				.WithMethod(HttpMethod.Get)
 				.Prepare();
@@ -47,7 +49,7 @@ namespace PainlessHttp.Client
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
-			var request = WebRequestWrapper
+			var request = _requestWrapper
 				.WithUrl(fullUrl)
 				.WithMethod(HttpMethod.Get)
 				.Prepare();
