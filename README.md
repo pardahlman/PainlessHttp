@@ -1,14 +1,13 @@
 # PainlessHttp
 
-
-
-The HTTP client that is so easy to use that it wont give you any headache!
+A Http client that is so easy to use that it wont ever give you any headache!
 
 PainlessHttp supports:
 
-* GET, POST
-* _Very_ soon PUT and DELETE
-* Plugable Serializers
+* ``GET``, ``POST``
+* _Very_ soon ``PUT`` and ``DELETE``
+* Plugable serializers
+* No external references to NuGets (_or any other libraries for that matter!_)
 
 Getting typed data async has never been easier
 
@@ -19,7 +18,7 @@ Getting typed data async has never been easier
 	Console.WriteLine("Mission of the day: {0}", todo.Description);
 ```
 
-Can't get typed response from server? No propblem, just pass ``string`` ass generic parameter and you get the raw response.
+Can't or wont get typed response from server? No problem, just pass ``string`` ass generic parameter and you get the raw response.
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
