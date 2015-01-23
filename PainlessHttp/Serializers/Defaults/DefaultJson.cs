@@ -9,7 +9,7 @@ using PainlessHttp.Serializers.Custom;
 
 namespace PainlessHttp.Serializers.Defaults
 {
-	public static class DefaultJson
+	public class DefaultJson
 	{
 		private static readonly Dictionary<Type, DataContractJsonSerializer> CachedSerializers = new Dictionary<Type, DataContractJsonSerializer>();
 
