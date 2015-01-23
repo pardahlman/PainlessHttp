@@ -2,6 +2,7 @@
 using PainlessHttp.Client;
 using PainlessHttp.Client.Configuration;
 using PainlessHttp.DevServer.Model;
+using PainlessHttp.Serializers;
 
 namespace PainlessHttp.Sandbox
 {
@@ -16,12 +17,11 @@ namespace PainlessHttp.Sandbox
 
 			var client = new HttpClient(config);
 
-			var raw = client.GetAsync<Todo>("api/todos/2").Result;
-
 			var tomorrow = new Todo { Description = "Sleep in" };
-			var tommorowJson = Newtonsoft.Json.JsonConvert.SerializeObject(tomorrow);
-
-			var created = client.PostAsync<Todo>("api/todos", tommorowJson).Result;
+			var serializer = new DefaultJsonSerializer();
+			var tomorrowJson = serializer.Serialize(tomorrow);
+			
+			var created = client.PostAsync<Todo>("api/todos", tomorrowJson).Result;
 		}
 	}
 }

@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,8 @@
     <Compile Include="Http\HttpMethods.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\Contracts\IContentSerializer.cs" />
+    <Compile Include="Serializers\DefaultJsonSerializer.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />

@@ -1,0 +1,62 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Json;
+using System.Text;
+using PainlessHttp.Http;
+using PainlessHttp.Serializers.Contracts;
+
+namespace PainlessHttp.Serializers
+{
+	public class DefaultJsonSerializer : IContentSerializer
+	{
+		private static readonly Dictionary<Type, DataContractJsonSerializer> CachedSerializers = new Dictionary<Type, DataContractJsonSerializer>();
+		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
+
+		public IEnumerable<ContentType> ContentType
+		{
+			get { return _supportedTypes; }
+		}
+
+		public string Serialize(object data)
+		{
+			var type = data.GetType();
+			var serializer = GetSerializer(type);
+			
+			var stream = new MemoryStream();
+			serializer.WriteObject(stream, data);
+			stream.Position = 0;
+			
+			string result;
+			using (var reader = new StreamReader(stream))
+			{
+				result = reader.ReadToEnd();
+			}
+			stream.Dispose();
+			return result;
+		}
+
+		private static DataContractJsonSerializer GetSerializer(Type type)
+		{
+			DataContractJsonSerializer serializer;
+			if (!CachedSerializers.TryGetValue(type, out serializer))
+			{
+				serializer = new DataContractJsonSerializer(type);
+				CachedSerializers.Add(type, serializer);
+			}
+			return serializer;
+		}
+
+		public T Deserialize<T>(string data)
+		{
+			var serializer = GetSerializer(typeof (T));
+
+			T result;
+			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
+			{
+				result = (T) serializer.ReadObject(stream);
+			}
+			return result;
+		}
+	}
+}
