@@ -54,8 +54,12 @@
     <Compile Include="Http\HttpMethods.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\Custom\CustomSerializer.cs" />
+    <Compile Include="Serializers\Custom\DefaultJson.cs" />
+    <Compile Include="Serializers\Custom\SerializeSettings.cs" />
     <Compile Include="Serializers\Contracts\IContentSerializer.cs" />
     <Compile Include="Serializers\DefaultJsonSerializer.cs" />
+    <Compile Include="Serializers\Defaults\ContentSerializers.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />
@@ -65,6 +69,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
