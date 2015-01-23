@@ -14,6 +14,10 @@ namespace PainlessHttp.Serializers.Custom
 
 		public Serializer(params ContentType[] contentTypes)
 		{
+			if (contentTypes == null || contentTypes.Length == 0)
+			{
+				throw new ArgumentException("The serializer must at leaste contain one ContentType.");
+			}
 			ContentType = contentTypes;
 
 			var methods = typeof(TSerializer).GetMethods();
