@@ -6,7 +6,7 @@ using System.Text;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
-namespace PainlessHttp.Serializers
+namespace PainlessHttp.Serializers.Typed
 {
 	public class DefaultJsonSerializer : IContentSerializer
 	{

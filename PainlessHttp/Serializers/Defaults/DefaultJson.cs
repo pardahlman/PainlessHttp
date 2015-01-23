@@ -5,8 +5,9 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
+using PainlessHttp.Serializers.Custom;
 
-namespace PainlessHttp.Serializers.Custom
+namespace PainlessHttp.Serializers.Defaults
 {
 	public static class DefaultJson
 	{

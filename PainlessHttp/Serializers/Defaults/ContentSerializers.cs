@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PainlessHttp.Serializers.Contracts;
+using PainlessHttp.Serializers.Typed;
 
 namespace PainlessHttp.Serializers.Defaults
 {

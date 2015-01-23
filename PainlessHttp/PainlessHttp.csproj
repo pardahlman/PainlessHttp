@@ -55,12 +55,12 @@
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\Custom\CustomSerializer.cs" />
-    <Compile Include="Serializers\Custom\DefaultJson.cs" />
     <Compile Include="Serializers\Custom\Serializer.cs" />
     <Compile Include="Serializers\Custom\SerializeSettings.cs" />
     <Compile Include="Serializers\Contracts\IContentSerializer.cs" />
-    <Compile Include="Serializers\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Defaults\ContentSerializers.cs" />
+    <Compile Include="Serializers\Defaults\DefaultJson.cs" />
+    <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />

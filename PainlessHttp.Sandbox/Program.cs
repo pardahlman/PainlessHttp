@@ -11,6 +11,7 @@ using PainlessHttp.Http;
 using PainlessHttp.Serializer.JsonNet;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Custom;
+using PainlessHttp.Serializers.Defaults;
 
 namespace PainlessHttp.Sandbox
 {
