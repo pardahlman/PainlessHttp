@@ -12,6 +12,7 @@ using PainlessHttp.Serializer.JsonNet;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Custom;
 using PainlessHttp.Serializers.Defaults;
+using PainlessHttp.Serializers.Typed;
 
 namespace PainlessHttp.Sandbox
 {
@@ -26,12 +27,17 @@ namespace PainlessHttp.Sandbox
 				{
 					Serializers = new List<IContentSerializer>
 					{
-						new Serializer<NewtonSoft>(ContentType.ApplicationJson)
+						new Serializer<NewtonSoft>(ContentType.ApplicationJson),
+						new Serializer<DefaultXml>(ContentType.ApplicationXml)
 					}
 				}
 			};
 
 			var tomorrow = new Todo { Description = "Sleep in" };
+
+			var xmlSerializer = new Serializer<DefaultXml>(ContentType.ApplicationXml);
+			var todoXml = xmlSerializer.Serialize(tomorrow);
+			var xmlBack = xmlSerializer.Deserialize<Todo>(todoXml);
 
 			// Create a custom serializer
 			var custom = SerializeSettings
