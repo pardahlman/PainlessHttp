@@ -1,30 +1,41 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using PainlessHttp.Http;
+using PainlessHttp.Serializers.Contracts;
 
 namespace PainlessHttp.Utils
 {
 	public class WebRequestWrapper
 	{
+		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
+
+		public WebRequestWrapper(IEnumerable<IContentSerializer> serializers)
+		{
+			_serializers = serializers.ToList();
+		}
 
 		public FluentWebRequestBuilder WithUrl(string url)
 		{
-			return new FluentWebRequestBuilder(_accept, url);
+			return new FluentWebRequestBuilder(_serializers, _accept, url);
 		}
 	}
 
 	public class FluentWebRequestBuilder
 	{
+		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept;
 		private readonly string _url;
 		private string _method;
 		private string _contentType;
 		private object _data;
 
-		internal FluentWebRequestBuilder(string accept, string url)
+		internal FluentWebRequestBuilder(List<IContentSerializer> serializers, string accept, string url)
 		{
+			_serializers = serializers;
 			_accept = accept;
 			_url = url;
 		}
@@ -40,7 +51,13 @@ namespace PainlessHttp.Utils
 			if (data == null)
 				return this;
 
-			_data = data;
+			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(type));
+			if (serializer == null)
+			{
+				throw new Exception(string.Format("Can not find serializer for content type '{0}'.", type));
+			}
+
+			_data = serializer.Serialize(data);
 			_contentType = HttpConverter.ContentType(type);
 			return this;
 		}

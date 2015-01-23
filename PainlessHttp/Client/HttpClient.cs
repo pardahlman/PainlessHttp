@@ -1,23 +1,26 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using PainlessHttp.Client.Configuration;
 using PainlessHttp.Client.Contracts;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
+using PainlessHttp.Serializers.Defaults;
 using PainlessHttp.Utils;
 
 namespace PainlessHttp.Client
 {
 	public class HttpClient : IHttpClient
 	{
-		private readonly HttpClientConfiguration _config;
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestWrapper _requestWrapper;
 
+		
 		public HttpClient(HttpClientConfiguration config)
 		{
-			_config = config;
+			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults);
+
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
-			_requestWrapper = new WebRequestWrapper();
+			_requestWrapper = new WebRequestWrapper(serializers);
 		}
 
 		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 
