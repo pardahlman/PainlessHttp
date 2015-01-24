@@ -31,21 +31,21 @@ namespace PainlessHttp.Utils
 	{
 		private readonly System.Net.HttpWebResponse _raw;
 
-		public string CharacterSet { get; private set; }
-		public string ContentEncoding { get; private set; }
-		public string Server { get; private set; }
-		public string ContentType { get; private set; }
-		public string StatusDescription { get; private set; }
-		public string Method { get; private set; }
-		public bool IsMutuallyAuthenticated { get; private set; }
-		public bool SupportsHeaders { get; private set; }
-		public long ContentLength { get; private set; }
+		public string CharacterSet { get; set; }
+		public string ContentEncoding { get; set; }
+		public string Server { get; set; }
+		public string ContentType { get; set; }
+		public string StatusDescription { get; set; }
+		public string Method { get; set; }
+		public bool IsMutuallyAuthenticated { get; set; }
+		public bool SupportsHeaders { get; set; }
+		public long ContentLength { get; set; }
 		public CookieCollection Cookies { get; set; }
-		public WebHeaderCollection Headers { get; private set; }
-		public DateTime LastModified { get; private set; }
-		public Version ProtocolVersion { get; private set; }
-		public Uri ResponseUri { get; private set; }
-		public HttpStatusCode StatusCode { get; private set; }
+		public WebHeaderCollection Headers { get; set; }
+		public DateTime LastModified { get; set; }
+		public Version ProtocolVersion { get; set; }
+		public Uri ResponseUri { get; set; }
+		public HttpStatusCode StatusCode { get; set; }
 
 		public HttpWebResponse(System.Net.HttpWebResponse raw = null)
 		{
