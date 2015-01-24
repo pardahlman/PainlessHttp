@@ -66,6 +66,7 @@
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />
+    <Compile Include="Utils\ResponseTransformer.cs" />
     <Compile Include="Utils\UrlBuilder.cs" />
     <Compile Include="Utils\WebRequestWrapper.cs" />
   </ItemGroup>

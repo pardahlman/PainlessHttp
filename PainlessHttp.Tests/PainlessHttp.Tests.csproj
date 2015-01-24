@@ -59,6 +59,7 @@
     <Compile Include="Serializers\SerializerTestClasses.cs" />
     <Compile Include="Utils\ClientUtilsTests.cs" />
     <Compile Include="Utils\HttpConverterTests.cs" />
+    <Compile Include="Utils\ResponseTransformerTests.cs" />
     <Compile Include="Utils\UrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
