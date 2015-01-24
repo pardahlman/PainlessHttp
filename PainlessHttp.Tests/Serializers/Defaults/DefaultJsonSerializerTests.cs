@@ -37,5 +37,24 @@ namespace PainlessHttp.Tests.Serializers.Defaults
 			/* Assert */
 			_cachedSerializers.VerifyAll();
 		}
+
+		[Test]
+		public void Should_Look_For_Existing_Serializer_Before_Creating_New()
+		{
+			/* Setup */
+			var obj = new SerializerTestClass { StringProp = Guid.NewGuid().ToString() };
+			DataContractJsonSerializer serializer = null;
+			_cachedSerializers
+				.Setup(c => c.TryGetValue(
+					It.Is<Type>(type => type == typeof(SerializerTestClass)),
+					out serializer))
+				.Verifiable();
+
+			/* Test */
+			_serializer.Serialize(obj);
+
+			/* Assert */
+			_cachedSerializers.VerifyAll();
+		}
 	}
 }
