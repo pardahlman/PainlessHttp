@@ -5,7 +5,7 @@ using Moq;
 using NUnit.Framework;
 using PainlessHttp.Serializers.Typed;
 
-namespace PainlessHttp.Tests.Serializers.Defaults
+namespace PainlessHttp.Tests.Serializers.Typed
 {
 	[TestFixture]
 	public class DefaultXmlSerializerTests
