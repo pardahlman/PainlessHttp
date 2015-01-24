@@ -10,8 +10,16 @@ namespace PainlessHttp.Serializers.Typed
 {
 	public class DefaultJsonSerializer : IContentSerializer
 	{
-		private static readonly Dictionary<Type, DataContractJsonSerializer> CachedSerializers = new Dictionary<Type, DataContractJsonSerializer>();
+		private static IDictionary<Type, DataContractJsonSerializer> cachedSerializers;
 		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
+
+		public DefaultJsonSerializer() : this(new Dictionary<Type, DataContractJsonSerializer>())
+		{ /* Do not dublicate code here */}
+
+		public DefaultJsonSerializer(IDictionary<Type, DataContractJsonSerializer> preCachedSerializers)
+		{
+			cachedSerializers = preCachedSerializers ?? new Dictionary<Type, DataContractJsonSerializer>();
+		}
 
 		public IEnumerable<ContentType> ContentType
 		{
@@ -39,10 +47,10 @@ namespace PainlessHttp.Serializers.Typed
 		private static DataContractJsonSerializer GetSerializer(Type type)
 		{
 			DataContractJsonSerializer serializer;
-			if (!CachedSerializers.TryGetValue(type, out serializer))
+			if (!cachedSerializers.TryGetValue(type, out serializer))
 			{
 				serializer = new DataContractJsonSerializer(type);
-				CachedSerializers.Add(type, serializer);
+				cachedSerializers.Add(type, serializer);
 			}
 			return serializer;
 		}

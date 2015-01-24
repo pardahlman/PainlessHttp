@@ -39,6 +39,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializers\Defaults\DefaultJsonSerializerTests.cs" />
+    <Compile Include="Serializers\SerializerTestClasses.cs" />
     <Compile Include="Utils\ClientUtilsTests.cs" />
     <Compile Include="Utils\HttpConverterTests.cs" />
     <Compile Include="Utils\UrlBuilderTests.cs" />
