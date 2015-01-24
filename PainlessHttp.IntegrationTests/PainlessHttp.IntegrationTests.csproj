@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Methods\GetTests.cs" />
+    <Compile Include="Methods\PostTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebApiSetupFixture.cs" />
   </ItemGroup>
