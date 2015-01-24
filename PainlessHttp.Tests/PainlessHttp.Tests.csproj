@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\Custom\SerializerTests.cs" />
+    <Compile Include="Serializers\Custom\SerializeSettingsTests.cs" />
     <Compile Include="Serializers\Defaults\DefaultJsonSerializerTests.cs" />
     <Compile Include="Serializers\Defaults\DefaultXmlSerializerTests.cs" />
     <Compile Include="Serializers\SerializerTestClasses.cs" />

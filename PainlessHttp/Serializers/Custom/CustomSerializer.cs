@@ -11,11 +11,11 @@ namespace PainlessHttp.Serializers.Custom
 		private readonly Func<string, Type, object> _deserialize;
 		public IEnumerable<ContentType> ContentType { get; private set; }
 
-		public CustomSerializer(ContentType type, Func<object, string> serialize, Func<string, Type, object> deserialize)
+		public CustomSerializer(IEnumerable<ContentType> types, Func<object, string> serialize, Func<string, Type, object> deserialize)
 		{
 			_serialize = serialize;
 			_deserialize = deserialize;
-			ContentType = new List<ContentType> {type};
+			ContentType = types;
 		}
 
 		public string Serialize(object data)

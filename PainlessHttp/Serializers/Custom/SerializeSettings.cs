@@ -6,7 +6,7 @@ namespace PainlessHttp.Serializers.Custom
 {
 	public class SerializeSettings
 	{
-		public static ConfigureSerialize For(ContentType applicationJson)
+		public static ConfigureSerialize For(params ContentType[] applicationJson)
 		{
 			return new ConfigureSerialize(applicationJson);
 		}
@@ -14,25 +14,25 @@ namespace PainlessHttp.Serializers.Custom
 
 	public class ConfigureSerialize
 	{
-		private readonly ContentType _applicationJson;
+		private readonly ContentType[] _contentTypes;
 
-		public ConfigureSerialize(ContentType applicationJson)
+		public ConfigureSerialize(ContentType[] contentTypes)
 		{
-			_applicationJson = applicationJson;
+			_contentTypes = contentTypes;
 		}
 
 		public ConfigureDeserialize Serialize(Func<object, string> serialize)
 		{
-			return new ConfigureDeserialize(_applicationJson, serialize);
+			return new ConfigureDeserialize(_contentTypes, serialize);
 		}
 	}
 
 	public class ConfigureDeserialize
 	{
-		private readonly ContentType _contentType;
+		private readonly ContentType[] _contentType;
 		private readonly Func<object, string> _serialize;
 
-		public ConfigureDeserialize(ContentType contentType, Func<object, string> serialize)
+		public ConfigureDeserialize(ContentType[] contentType, Func<object, string> serialize)
 		{
 			_contentType = contentType;
 			_serialize = serialize;
