@@ -14,5 +14,8 @@ namespace PainlessHttp.Client.Contracts
 
 		IHttpResponse<T> Put<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
 		Task<IHttpResponse<T>> PutAsync<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
+
+		IHttpResponse<T> Delete<T>(string url, object data = null, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
+		Task<IHttpResponse<T>> DeleteAsync<T>(string url, object data = null, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
 	}
-}
+}	

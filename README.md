@@ -4,8 +4,7 @@ A Http client that is so easy to use that it wont ever give you any headache!
 
 PainlessHttp supports:
 
-* ``GET``, ``POST``, ``PUT``
-* _Very_ soon ``DELETE``
+* ``GET``, ``POST``, ``PUT`` and ``DELETE``
 * Plugable serializers
 * No external references to NuGets (_or any other libraries for that matter!_)
 
@@ -47,6 +46,29 @@ Store new data with ``POST``
 	// update it
 	completedTodo.IsCompleted = true;
 	client.Put<string>("api/todos", completedTodo);
+```
+
+``DELETE`` works the same way
+
+```csharp
+	var client = new HttpClient("http://localhost:1337/");
+	var response = client.DeleteAsync<string>("api/todos/2").Result;
+	if (response.StatusCode == HttpStatusCode.OK)
+	{
+		Console.WriteLine("Todo successfully deleted");
+	}
+```
+
+There is nothing in the [Hypertext Transfer Protocol HTTP/1.1 spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html) that forbids the request to have a body. In fact, some [well-known APIs](https://developer.atlassian.com/static/rest/stash/3.6.0/stash-branch-utils-rest.html) require the ``DELETE`` request to contain a body. PainlessHttp supports this out-of-the-box
+
+```csharp
+  var client = new HttpClient("http://localhost:1337/rest/branch-utils/1.0/");
+  var requestBody = new
+  {
+    name = "/refs/heads/my-branch",
+    dryRun = false
+  };
+  var response = client.Delete<string>("projects/web/repos/painless/branches", requestBody);
 ```
 
 ## Configuration
