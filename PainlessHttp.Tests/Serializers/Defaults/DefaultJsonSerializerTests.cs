@@ -56,5 +56,30 @@ namespace PainlessHttp.Tests.Serializers.Defaults
 			/* Assert */
 			_cachedSerializers.VerifyAll();
 		}
+
+		[Test]
+		public void Should_Be_Able_To_Serialize_Advanced_Objects()
+		{
+			/* Setup */
+			var advanced = new AdvancedTestClass
+			{
+				IntProp = 3,
+				ListProp = new List<string> { "One", "Two"},
+				ObjectRef = new SerializerTestClass
+				{
+					StringProp = "Sub-object property"
+				}
+			};
+
+			/* Test */
+			var result = _serializer.Serialize(advanced);
+
+			/* Assert */
+			Assert.That(result, Is.StringStarting("{"), "Correct json object opening");
+			Assert.That(result, Is.StringEnding("}"), "Correct json closing");
+			Assert.That(result, Is.StringContaining("\"IntProp\":3"));
+			Assert.That(result, Is.StringContaining("\"ObjectRef\":{\"StringProp\":\"Sub-object property\"}"));
+			Assert.That(result, Is.StringContaining("\"ListProp\":[\"One\",\"Two\"]"));
+		}
 	}
 }
