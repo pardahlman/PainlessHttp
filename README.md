@@ -103,6 +103,19 @@ There are more ways to create customized serializers.
 
 Of course, you can create your own class  that implements ``IContentSerializer`` and register that one.
 
+#### Increase speed with pre-complied serializers
+Painless Http wants to perform your requests as fast as possible. That's why all the type-specific serializers are cached in all the default implementations. If you request the same _type_ of object twice, you won't need to pay the penalty of creating a new type-specific serializer. However, in some instances you would want to reduce the overhead of creating the serializer in the first request, too.  If you want to speed up things right from the start, just register underlying serializers
+```csharp
+  var ignores = new XmlAttributeOverrides();
+  ignores.Add(typeof(Todo), "Description", new XmlAttributes { XmlIgnore = true });
+  var preCompiledSerializers = new Dictionary<Type, XmlSerializer>
+  {
+    {typeof(Todo), new XmlSerializer(typeof(Todo), ignores)}
+  };
+  var xmlSerializer = new DefaultXmlSerializer(preCompiledSerializers);
+
+  var xmlTomorrow = xmlSerializer.Serialize(tomorrow);
+```
 #### The NewtonSoft serializer
 
 One of the most popular json serializers is Newtonsoft's JsonNet library. Here's how you configure it
