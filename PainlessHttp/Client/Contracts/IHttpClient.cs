@@ -11,5 +11,8 @@ namespace PainlessHttp.Client.Contracts
 
 		IHttpResponse<T> Post<T>(string url, object data, object query = null) where T : class;
 		Task<IHttpResponse<T>> PostAsync<T>(string url, object data, object query = null) where T : class;
+
+		IHttpResponse<T> Put<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
+		Task<IHttpResponse<T>> PutAsync<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class;
 	}
 }

@@ -4,8 +4,8 @@ A Http client that is so easy to use that it wont ever give you any headache!
 
 PainlessHttp supports:
 
-* ``GET``, ``POST``
-* _Very_ soon ``PUT`` and ``DELETE``
+* ``GET``, ``POST``, ``PUT``
+* _Very_ soon ``DELETE``
 * Plugable serializers
 * No external references to NuGets (_or any other libraries for that matter!_)
 
@@ -27,13 +27,26 @@ Can't or wont get typed response from server? No problem, just pass ``string`` a
 	Console.WriteLine("The server replied with: {0}", rawResponse);
 ```
 
-Store new data with POST
+Store new data with ``POST``
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
 	var tomorrow = new Todo { Description = "Sleep in" };
 	Todo created = client.PostAsync<Todo>("api/todos", tomorrow).Result;
 	Console.WriteLine("Latest todo: {0}", created.Description);
+```
+
+... or update it with ``PUT``
+
+```csharp
+	// retrive data
+	var client = new HttpClient(config);
+	var response = client.GetAsync<Todo>("api/todos/2").Result;
+	var completedTodo = response.Body;
+
+	// update it
+	completedTodo.IsCompleted = true;
+	client.Put<string>("api/todos", completedTodo);
 ```
 
 ## Configuration

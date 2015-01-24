@@ -49,6 +49,17 @@ namespace PainlessHttp.Client
 			return response;
 		}
 
+		public IHttpResponse<T> Put<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		{
+			return PutAsync<T>(url, data, query, type).Result;
+		}
+
+		public async Task<IHttpResponse<T>> PutAsync<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		{
+			var response = await PerformRequestAsync<T>(HttpMethod.Put, url, query, type, data);
+			return response;
+		}
+
 		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Unknown, object data = null)where T : class 
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
