@@ -13,6 +13,7 @@ namespace PainlessHttp.Client
 	{
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestWrapper _requestWrapper;
+		private ResponseTransformer _responseTransformer;
 
 		public HttpClient(string baseUrl) : this(new HttpClientConfiguration{BaseUrl = baseUrl})
 		{
@@ -21,10 +22,11 @@ namespace PainlessHttp.Client
 		
 		public HttpClient(HttpClientConfiguration config)
 		{
-			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults);
+			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
 
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			_requestWrapper = new WebRequestWrapper(serializers);
+			_responseTransformer = new ResponseTransformer(serializers);
 		}
 
 		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 
@@ -83,17 +85,7 @@ namespace PainlessHttp.Client
 
 			var response = request.Perform();
 
-			var payloadTask = ClientUtils.ParseBodyAsync<T>(response);
-
-			return await payloadTask.ContinueWith(task =>
-			{
-				IHttpResponse<T> result = new HttpResponse<T>
-				{
-					StatusCode = response.StatusCode,
-					Body = task.Result
-				};
-				return result;
-			});
+			return await _responseTransformer.TransformAsync<T>(response);
 		}
 	}
 }

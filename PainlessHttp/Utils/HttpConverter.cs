@@ -44,7 +44,7 @@ namespace PainlessHttp.Utils
 		public static ContentType ContentType(string type)
 		{
 			var result = ContentTypes
-								.Where(ct => ct.Item2 == type)
+								.Where(ct => type.IndexOf(ct.Item2, StringComparison.InvariantCultureIgnoreCase) != -1)
 								.Select(ct => ct.Item1)
 								.FirstOrDefault();
 

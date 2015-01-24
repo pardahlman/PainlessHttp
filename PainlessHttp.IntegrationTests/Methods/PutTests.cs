@@ -34,7 +34,7 @@ namespace PainlessHttp.IntegrationTests.Methods
 			existingTodo.Description = newDescription;
 
 			/* Test */
-			var result = _client.Put<Todo>("api/todos", existingTodo);
+			var result = _client.Put<string>("api/todos", existingTodo);
 			
 			/* Assert */
 			Assert.That(result.StatusCode, Is.EqualTo(HttpStatusCode.NoContent));
