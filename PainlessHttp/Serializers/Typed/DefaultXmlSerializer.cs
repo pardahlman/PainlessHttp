@@ -10,13 +10,21 @@ namespace PainlessHttp.Serializers.Typed
 {
 	public class DefaultXmlSerializer : IContentSerializer
 	{
-		private static readonly Dictionary<Type, XmlSerializer> CachedSerializers = new Dictionary<Type, XmlSerializer>();
+		private static IDictionary<Type, XmlSerializer> cachedSerializers;
 
 		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
 
 		public IEnumerable<ContentType> ContentType
 		{
 			get { return _supportedTypes; }
+		}
+
+		public DefaultXmlSerializer() : this(new Dictionary<Type, XmlSerializer>())
+		{ /* Don't duplicate code here*/ }
+
+		public DefaultXmlSerializer(IDictionary<Type, XmlSerializer> preCached)
+		{
+			cachedSerializers = preCached;
 		}
 
 		public string Serialize(object data)
@@ -40,10 +48,10 @@ namespace PainlessHttp.Serializers.Typed
 		public XmlSerializer GetSerializer(Type type)
 		{
 			XmlSerializer serializer;
-			if (!CachedSerializers.TryGetValue(type, out serializer))
+			if (!cachedSerializers.TryGetValue(type, out serializer))
 			{
 				serializer = new XmlSerializer(type);
-				CachedSerializers.Add(type, serializer);
+				cachedSerializers.Add(type, serializer);
 			}
 			return serializer;
 		}
