@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization.Json;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using PainlessHttp.Serializers.Typed;
 
@@ -80,6 +81,31 @@ namespace PainlessHttp.Tests.Serializers.Defaults
 			Assert.That(result, Is.StringContaining("\"IntProp\":3"));
 			Assert.That(result, Is.StringContaining("\"ObjectRef\":{\"StringProp\":\"Sub-object property\"}"));
 			Assert.That(result, Is.StringContaining("\"ListProp\":[\"One\",\"Two\"]"));
+		}
+
+		[Test]
+		public void Should_Be_Able_To_Deserialize_Objects()
+		{
+			/* Setup */
+			var expected = new AdvancedTestClass
+			{
+				IntProp = 3,
+				ListProp = new List<string> { "One", "Two" },
+				ObjectRef = new SerializerTestClass
+				{
+					StringProp = "Sub-object property"
+				}
+			};
+			var input = JsonConvert.SerializeObject(expected);
+
+			/* Test */
+			var result = _serializer.Deserialize<AdvancedTestClass>(input);
+
+			/* Assert */
+			Assert.That(result.IntProp, Is.EqualTo(expected.IntProp));
+			Assert.That(result.ObjectRef.StringProp, Is.EqualTo(expected.ObjectRef.StringProp));
+			Assert.That(result.ListProp[0], Is.EqualTo(expected.ListProp[0]));
+			Assert.That(result.ListProp[1], Is.EqualTo(expected.ListProp[1]));
 		}
 	}
 }
