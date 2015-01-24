@@ -1,14 +1,12 @@
 # PainlessHttp
 
-A Http client that is so easy to use that it wont ever give you any headache!
-
-PainlessHttp supports:
+No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!
 
 * ``GET``, ``POST``, ``PUT`` and ``DELETE``
 * Plugable serializers
 * No external references to NuGets (_or any other libraries for that matter!_)
 
-Getting typed medata async has never been easier
+Getting typed metadata async has never been easier
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
@@ -17,7 +15,7 @@ Getting typed medata async has never been easier
 	Console.WriteLine("Mission of the day: {0}", todo.Description);
 ```
 
-Don't feel like specifying the type of theresponse body? No problem, just pass ``string`` as generic parameter and you get the raw response.
+Don't feel like specifying the type of there response body? No problem, just pass ``string`` as generic parameter and you get the raw response.
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
@@ -38,7 +36,7 @@ Store new data with ``POST``
 ... or update it with ``PUT``
 
 ```csharp
-	// retrive data
+	// retrieve data
 	var client = new HttpClient(config);
 	var response = client.GetAsync<Todo>("api/todos/2").Result;
 	var completedTodo = response.Body;
