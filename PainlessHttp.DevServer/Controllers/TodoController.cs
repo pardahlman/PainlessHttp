@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -18,9 +19,14 @@ namespace PainlessHttp.DevServer.Controllers
 
 		[Route("api/todos")]
 		[HttpGet]
-		public HttpResponseMessage GetAllTodos()
+		public HttpResponseMessage GetAllTodos(bool includeCompeted = true)
 		{
-			return Request.CreateResponse(HttpStatusCode.OK, _repo.GetAll());
+			var todos = _repo.GetAll();
+			if (includeCompeted == false)
+			{
+				todos = todos.Where(t => t.IsCompleted == false).ToList();
+			}
+			return Request.CreateResponse(HttpStatusCode.OK, todos);
 		}
 
 		[Route("api/todos/{id}")]

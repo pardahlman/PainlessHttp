@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Linq;
+using NUnit.Framework;
 using PainlessHttp.Client;
 using PainlessHttp.Client.Configuration;
 using PainlessHttp.DevServer.Data;
@@ -68,6 +70,19 @@ namespace PainlessHttp.IntegrationTests.Methods
 			Assert.That(result.Body, Is.StringEnding("}"));
 		}
 
+		[Test]
+		public void Should_Be_Able_To_Affect_Response_With_Query()
+		{
+			/* Setup */
+			var allTodos = _repo.GetAll();
 
+			/* Test */
+			var result = _client.Get<List<Todo>>("api/todos", new {includeCompeted = false});
+
+			/* Assert */
+			Assert.That(allTodos.Any(t => t.IsCompleted), Is.True, "There should at leaste be one competed todo in order to be sure this works");
+			Assert.That(result.Body, Is.Not.Empty, "There must be at leaste one todo in the response");
+			Assert.That(result.Body.Any(t => t.IsCompleted), Is.False, "All completed todos should be filtered");
+		}
 	}
 }
