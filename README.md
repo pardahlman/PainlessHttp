@@ -70,6 +70,29 @@ There are more ways to create customized serializers.
 
 Of course, you can create your own class  that implements ``IContentSerializer`` and register that one.
 
+#### The NewtonSoft serializer
+
+One of the most popular json serializers is Newtonsoft's JsonNet library. Here's how you configure it
+
+```csharp
+ 	// create a Newtonsof configuration object
+	var newtonSoftSettings = new JsonSerializerSettings
+	{
+		ContractResolver = new CamelCasePropertyNamesContractResolver()
+	};
+
+	// register the change
+	NewtonSoft.UpdateSettings(new NewtonsoftSettings {Settings = newtonSoftSettings});
+
+	// instanciate
+	var serializer = new Serializer<NewtonSoft>(ContentType.ApplicationJson);
+
+	// Go crazy, oh baby!
+	var tomorrowJson = serializer.Serialize(tomorrow);
+	var tommorowObj = serializer.Deserialize<Todo>(tomorrowJson);
+```
+
+_Note that the Jsonsoft `ContentConverter is not part of the core lib. Download the nuget_ ``PainlessHttp.Serializers.JsonNet``.
 ## Credits
 
 Author: Pär Dahlman
