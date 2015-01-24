@@ -23,36 +23,5 @@ namespace PainlessHttp.Utils
 			}
 			return string.Format("{0} {1}", _painlessAgent, _version);
 		}
-
-		public static async Task<string> ReadBodyAsync(IHttpWebResponse response)
-		{
-			var responseStream = response.GetResponseStream();
-			if (responseStream == null)
-			{
-				throw new ArgumentNullException("response");
-			}
-
-			string raw;
-			using (var reader = new StreamReader(responseStream))
-			{
-				raw = await reader.ReadToEndAsync();
-			}
-			return raw;
-		}
-		public async static Task<T> ParseBodyAsync<T>(IHttpWebResponse response) where T : class
-		{
-			var readTask = ReadBodyAsync(response);
-			var deserializeTask = await readTask.ContinueWith(task =>
-							{
-								if (typeof (T) == typeof (string))
-								{
-									return task.Result as T;
-								}
-								var body = task.Result;
-								var typedBody = JsonConvert.DeserializeObject<T>(body);
-								return typedBody;
-							});
-			return deserializeTask;
-		}
 	}
 }
