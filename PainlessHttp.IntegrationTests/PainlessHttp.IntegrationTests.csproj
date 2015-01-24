@@ -75,6 +75,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Methods\DeleteTests.cs" />
     <Compile Include="Methods\GetTests.cs" />
     <Compile Include="Methods\PostTests.cs" />
     <Compile Include="Methods\PutTests.cs" />
