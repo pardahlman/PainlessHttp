@@ -5,7 +5,6 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Net;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
 using PainlessHttp.Serializers.Contracts;
