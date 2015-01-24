@@ -9,11 +9,14 @@ namespace PainlessHttp.IntegrationTests
 	public class WebApiSetupFixture
 	{
 		private IDisposable _app;
-		public const string BaseAddress = "http://localhost:8080/";
+		public static string BaseAddress;
 
 		[SetUp]
 		public void WireUpWebApiEndpoint()
 		{
+			var randomPort = new Random().Next(1, 65535);
+			BaseAddress = string.Format("http://localhost:{0}/", randomPort);
+			Console.Write("Development Server running at " + BaseAddress);
 			_app = WebApp.Start<Startup>(BaseAddress);
 		}
 
