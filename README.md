@@ -9,7 +9,7 @@ PainlessHttp supports:
 * Plugable serializers
 * No external references to NuGets (_or any other libraries for that matter!_)
 
-Getting typed data async has never been easier
+Getting typed medata async has never been easier
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
@@ -18,7 +18,7 @@ Getting typed data async has never been easier
 	Console.WriteLine("Mission of the day: {0}", todo.Description);
 ```
 
-Can't or wont get typed response from server? No problem, just pass ``string`` ass generic parameter and you get the raw response.
+Don't feel like specifying the type of theresponse body? No problem, just pass ``string`` as generic parameter and you get the raw response.
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
