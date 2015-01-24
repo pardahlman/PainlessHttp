@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
@@ -64,43 +66,47 @@ namespace PainlessHttp.Utils
 
 		public RequestWrapper Prepare()
 		{
-			Func<HttpWebRequest> createFunc = () =>
+			Func<Task<HttpWebRequest>> requestCreateFunc = async () =>
 			{
-				var httpWebRequest = (HttpWebRequest)WebRequest.Create(_url);
-				httpWebRequest.AllowAutoRedirect = true;
-				httpWebRequest.UserAgent = ClientUtils.GetUserAgent();
-				httpWebRequest.Method = _method;
-				httpWebRequest.Accept = _accept;
+				var webReq = (HttpWebRequest) WebRequest.Create(_url);
+				webReq.AllowAutoRedirect = true;
+				webReq.UserAgent = ClientUtils.GetUserAgent();
+				webReq.Method = _method;
+				webReq.Accept = _accept;
 
 				if (_data != null)
 				{
-					httpWebRequest.ContentType = _contentType;
+					webReq.ContentType = _contentType;
 					var payloadAsBytes = Encoding.UTF8.GetBytes(_data.ToString());
-					httpWebRequest.ContentLength = payloadAsBytes.Length;
-					var postStream = httpWebRequest.GetRequestStream();
-					postStream.Write(payloadAsBytes, 0, payloadAsBytes.Length);
-					postStream.Close();
+					webReq.ContentLength = payloadAsBytes.Length;
+
+					using (var stream = await Task<Stream>.Factory.FromAsync(webReq.BeginGetRequestStream, webReq.EndGetRequestStream, webReq))
+					{
+						await stream.WriteAsync(payloadAsBytes, 0, payloadAsBytes.Length);
+					}
 				}
-				return httpWebRequest;
+				return webReq;
 			};
 
-			return new RequestWrapper(createFunc);
+			return new RequestWrapper(requestCreateFunc);
 		}
 	}
 
 	public class RequestWrapper
 	{
-		private readonly Func<HttpWebRequest> _createFunc;
+		private readonly Func<Task<HttpWebRequest>> _createRequestFuncAsync;
 
-		public RequestWrapper(Func<HttpWebRequest> createFunc)
+		public RequestWrapper(Func<Task<HttpWebRequest>> requestFuncAsync)
 		{
-			_createFunc = createFunc;
+			_createRequestFuncAsync = requestFuncAsync;
 		}
 
-		public IHttpWebResponse Perform()
+		public async Task<IHttpWebResponse> PerformAsync()
 		{
-			var actual = (System.Net.HttpWebResponse)_createFunc().GetResponse();
-			return new HttpWebResponse(actual);
+			var webReq = await _createRequestFuncAsync();
+
+			var webResp = await Task<WebResponse>.Factory.FromAsync(webReq.BeginGetResponse, webReq.EndGetResponse, webReq);
+			return new HttpWebResponse((System.Net.HttpWebResponse)webResp);
 		}
 	}
 }

@@ -83,7 +83,7 @@ namespace PainlessHttp.Client
 				.WithPayload(data, type)
 				.Prepare();
 
-			var response = request.Perform();
+			var response = await request.PerformAsync();
 
 			return await _responseTransformer.TransformAsync<T>(response);
 		}
