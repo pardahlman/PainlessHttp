@@ -13,7 +13,7 @@ namespace PainlessHttp.Client
 	{
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestWrapper _requestWrapper;
-		private ResponseTransformer _responseTransformer;
+		private readonly ResponseTransformer _responseTransformer;
 
 		public HttpClient(string baseUrl) : this(new HttpClientConfiguration{BaseUrl = baseUrl})
 		{
