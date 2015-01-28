@@ -3,7 +3,7 @@ namespace PainlessHttp.Http
 	public enum ContentType
 	{
 		Unknown,
-		Default,
+		Negotiated,
 		ApplicationJson,
 		ApplicationXml,
 		TextPlain,

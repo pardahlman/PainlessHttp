@@ -40,40 +40,40 @@ namespace PainlessHttp.Client
 			return response;
 		}
 
-		public IHttpResponse<T> Post<T>(string url, object data, object query = null) where T : class
+		public IHttpResponse<T> Post<T>(string url, object data, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
-			return PostAsync<T>(url, data, query).Result;
+			return PostAsync<T>(url, data, query, type).Result;
 		}
 
-		public async Task<IHttpResponse<T>> PostAsync<T>(string url, object data, object query = null) where T : class
+		public async Task<IHttpResponse<T>> PostAsync<T>(string url, object data, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
-			var response = await PerformRequestAsync<T>(HttpMethod.Post, url, query, ContentType.ApplicationJson, data);
+			var response = await PerformRequestAsync<T>(HttpMethod.Post, url, query, type, data);
 			return response;
 		}
 
-		public IHttpResponse<T> Put<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		public IHttpResponse<T> Put<T>(string url, object data, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
 			return PutAsync<T>(url, data, query, type).Result;
 		}
 
-		public async Task<IHttpResponse<T>> PutAsync<T>(string url, object data, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		public async Task<IHttpResponse<T>> PutAsync<T>(string url, object data, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
 			var response = await PerformRequestAsync<T>(HttpMethod.Put, url, query, type, data);
 			return response;
 		}
 
-		public IHttpResponse<T> Delete<T>(string url, object data = null, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		public IHttpResponse<T> Delete<T>(string url, object data = null, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
 			return DeleteAsync<T>(url, data, query, type).Result;
 		}
 
-		public async Task<IHttpResponse<T>> DeleteAsync<T>(string url, object data = null, object query = null, ContentType type = ContentType.ApplicationJson) where T : class
+		public async Task<IHttpResponse<T>> DeleteAsync<T>(string url, object data = null, object query = null, ContentType type = ContentType.Negotiated) where T : class
 		{
 			var response = await PerformRequestAsync<T>(HttpMethod.Delete, url, query, type, data);
 			return response;
 		}
 
-		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Unknown, object data = null)where T : class 
+		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Negotiated, object data = null) where T : class 
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
