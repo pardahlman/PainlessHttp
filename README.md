@@ -3,6 +3,7 @@
 No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!
 
 * ``GET``, ``POST``, ``PUT`` and ``DELETE``
+* Content Negotiation
 * Plugable serializers
 * No external references to NuGets (_or any other libraries for that matter!_)
 
@@ -139,6 +140,22 @@ One of the most popular json serializers is Newtonsoft's JsonNet library. Here's
 ```
 
 _Note that the Jsonsoft `ContentConverter is not part of the core lib. Download the nuget_ ``PainlessHttp.Serializers.JsonNet``.
+
+### Content Negotiation
+If the request has a body, the default behaviour is to serialize it to json before sending the request. If you know right away that the endpoint you're requesting only supports another content type, you can change the default setting in the configuration object
+```csharp
+  var client = new HttpClient(new HttpClientConfiguration
+  {
+    BaseUrl = "http://localhost:1337/",
+    Advanced = { ContentType = ContentType.ApplicationJson }
+	});
+```
+If the server responds with status code ``UnsupportedMediaType`` or the Accept headers that does not contain the supplied content type, the default behaviour is to resend the request with supported content type (based on Accept headers). This behaviour can be overridden by supplying a content type in the request
+```csharp
+  var newTodo = new Todo { Description = "Write tests" };
+  var overrideType = ContentType.ApplicationJson;
+  var created = _client.PostAsync<string>("/api/todo", newTodo, null, overrideType);
+```
 ## Credits
 
 Author: Pär Dahlman
