@@ -12,7 +12,7 @@ namespace PainlessHttp.Serializers.Typed
 	{
 		private static IDictionary<Type, XmlSerializer> cachedSerializers;
 
-		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
+		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationXml };
 
 		public IEnumerable<ContentType> ContentType
 		{

@@ -84,5 +84,15 @@ namespace PainlessHttp.IntegrationTests.Methods
 			Assert.That(result.Body, Is.Not.Empty, "There must be at leaste one todo in the response");
 			Assert.That(result.Body.Any(t => t.IsCompleted), Is.False, "All completed todos should be filtered");
 		}
+
+		[TestCase("json")]
+		[TestCase("xml")]
+		public void Should_Be_Able_To_Parse_Json_And_Xml(string format)
+		{
+			/* Setup */
+			/* Test */
+			/* Assert */
+			Assert.DoesNotThrow(() =>_client.Get<Todo>("api/content-type", new {prefered = format}));
+		}
 	}
 }
