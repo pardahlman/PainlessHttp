@@ -12,17 +12,19 @@ namespace PainlessHttp.Utils
 {
 	public class WebRequestWrapper
 	{
+		private readonly ContentType _defaultContentType;
 		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
 
-		public WebRequestWrapper(IEnumerable<IContentSerializer> serializers)
+		public WebRequestWrapper(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
 		{
+			_defaultContentType = defaultContentType;
 			_serializers = serializers.ToList();
 		}
 
 		public FluentWebRequestBuilder WithUrl(string url)
 		{
-			return new FluentWebRequestBuilder(_serializers, _accept, url);
+			return new FluentWebRequestBuilder(_serializers, _accept, _defaultContentType, url);
 		}
 	}
 
@@ -30,15 +32,18 @@ namespace PainlessHttp.Utils
 	{
 		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept;
+		private readonly ContentType _defaultContentType;
 		private readonly string _url;
 		private string _method;
-		private string _contentType;
+		private ContentType _contentType;
 		private object _data;
+		private bool _negotiate;
 
-		internal FluentWebRequestBuilder(List<IContentSerializer> serializers, string accept, string url)
+		internal FluentWebRequestBuilder(List<IContentSerializer> serializers, string accept, ContentType defaultContentType, string url)
 		{
 			_serializers = serializers;
 			_accept = accept;
+			_defaultContentType = defaultContentType;
 			_url = url;
 		}
 
@@ -50,24 +55,39 @@ namespace PainlessHttp.Utils
 
 		public FluentWebRequestBuilder WithPayload(object data, ContentType type)
 		{
-			if (data == null)
-				return this;
-
-			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(type));
-			if (serializer == null)
+			if (type == ContentType.Negotiated)
 			{
-				throw new Exception(string.Format("Can not find serializer for content type '{0}'.", type));
+				_negotiate = true;
+				type = _defaultContentType;
 			}
+			
+			_data = data;
+			_contentType = type;
 
-			_data = serializer.Serialize(data);
-			_contentType = HttpConverter.ContentType(type);
+			
 			return this;
 		}
 
 		public RequestWrapper Prepare()
 		{
-			Func<Task<HttpWebRequest>> requestCreateFunc = async () =>
+			Func<ContentType?, Task<HttpWebRequest>> requestCreateFunc = async (ContentType? overrideType) =>
 			{
+				string type;
+				if (overrideType.HasValue)
+				{
+					type = HttpConverter.ContentType(overrideType.Value);
+				}
+				else
+				{
+					type = HttpConverter.ContentType(_contentType);
+				}
+				
+				var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(_contentType));
+				if (serializer == null)
+				{
+					throw new Exception(string.Format("Can not find serializer for content type '{0}'.", _contentType));
+				}
+
 				var webReq = (HttpWebRequest) WebRequest.Create(_url);
 				webReq.AllowAutoRedirect = true;
 				webReq.UserAgent = ClientUtils.GetUserAgent();
@@ -76,7 +96,8 @@ namespace PainlessHttp.Utils
 
 				if (_data != null)
 				{
-					webReq.ContentType = _contentType;
+					_data = serializer.Serialize(_data);
+					webReq.ContentType = type;
 					var payloadAsBytes = Encoding.UTF8.GetBytes(_data.ToString());
 					webReq.ContentLength = payloadAsBytes.Length;
 
@@ -88,25 +109,46 @@ namespace PainlessHttp.Utils
 				return webReq;
 			};
 
-			return new RequestWrapper(requestCreateFunc);
+			return new RequestWrapper(requestCreateFunc, _negotiate);
 		}
 	}
 
 	public class RequestWrapper
 	{
-		private readonly Func<Task<HttpWebRequest>> _createRequestFuncAsync;
+		private readonly Func<ContentType?, Task<HttpWebRequest>> _createRequestFuncAsync;
+		private readonly bool _negotiate;
 
-		public RequestWrapper(Func<Task<HttpWebRequest>> requestFuncAsync)
+		public RequestWrapper(Func<ContentType?, Task<HttpWebRequest>> requestFuncAsync, bool negotiate)
 		{
 			_createRequestFuncAsync = requestFuncAsync;
+			_negotiate = negotiate;
 		}
 
 		public async Task<IHttpWebResponse> PerformAsync()
 		{
-			var webReq = await _createRequestFuncAsync();
+			var webReq = await _createRequestFuncAsync(null);
 
-			var webResp = await Task<WebResponse>.Factory.FromAsync(webReq.BeginGetResponse, webReq.EndGetResponse, webReq);
-			return new HttpWebResponse((System.Net.HttpWebResponse)webResp);
+			System.Net.HttpWebResponse result;
+			
+			try
+			{
+				result = (System.Net.HttpWebResponse) await Task<WebResponse>.Factory.FromAsync(webReq.BeginGetResponse, webReq.EndGetResponse, webReq);
+				return new HttpWebResponse(result);
+			}
+			catch (WebException e)
+			{
+				result = (System.Net.HttpWebResponse) e.Response;
+				
+				if (!_negotiate)
+				{
+					return new HttpWebResponse(result);
+				}
+			}
+
+			var accept = result.Headers["Accept"];
+			webReq = await _createRequestFuncAsync(HttpConverter.ContentType(accept));
+			result = (System.Net.HttpWebResponse)await Task<WebResponse>.Factory.FromAsync(webReq.BeginGetResponse, webReq.EndGetResponse, webReq);
+			return new HttpWebResponse(result);
 		}
 	}
 }

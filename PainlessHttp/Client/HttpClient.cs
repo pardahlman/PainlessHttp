@@ -14,7 +14,6 @@ namespace PainlessHttp.Client
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestWrapper _requestWrapper;
 		private readonly ResponseTransformer _responseTransformer;
-
 		public HttpClient(string baseUrl) : this(new HttpClientConfiguration{BaseUrl = baseUrl})
 		{
 			/* Don't duplicate code here.*/
@@ -24,8 +23,12 @@ namespace PainlessHttp.Client
 		{
 			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
 
+			var defaultContentType = config.Advanced.ContentType == ContentType.Unknown
+				? ContentType.ApplicationJson
+				: config.Advanced.ContentType;
+ 
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
-			_requestWrapper = new WebRequestWrapper(serializers);
+			_requestWrapper = new WebRequestWrapper(serializers, defaultContentType);
 			_responseTransformer = new ResponseTransformer(serializers);
 		}
 
