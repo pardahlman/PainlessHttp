@@ -12,7 +12,7 @@ namespace PainlessHttp.Client
 	public class HttpClient : IHttpClient
 	{
 		private readonly UrlBuilder _urlBuilder;
-		private readonly WebRequestWrapper _requestWrapper;
+		private readonly WebRequestBuilder _reqBuilder;
 		private readonly ResponseTransformer _responseTransformer;
 		public HttpClient(string baseUrl) : this(new HttpClientConfiguration{BaseUrl = baseUrl})
 		{
@@ -28,7 +28,7 @@ namespace PainlessHttp.Client
 				: config.Advanced.ContentType;
  
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
-			_requestWrapper = new WebRequestWrapper(serializers, defaultContentType);
+			_reqBuilder = new WebRequestBuilder(serializers, defaultContentType);
 			_responseTransformer = new ResponseTransformer(serializers);
 		}
 
@@ -80,7 +80,7 @@ namespace PainlessHttp.Client
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
-			var request = _requestWrapper
+			var request = _reqBuilder
 				.WithUrl(fullUrl)
 				.WithMethod(method)
 				.WithPayload(data, type)

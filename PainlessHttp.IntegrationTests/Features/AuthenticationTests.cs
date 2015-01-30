@@ -21,15 +21,15 @@ namespace PainlessHttp.IntegrationTests.Features
 			_client = new HttpClient(config);
 		}
 
-		[Test]
-		public void Should_Return_Unauthorized_If_No_Credentials_Provided()
-		{
-			/* Setup */
-			/* Test */
-			var response = _client.Get<string>("api/authentication");
+		//[Test]
+		//public void Should_Return_Unauthorized_If_No_Credentials_Provided()
+		//{
+		//	/* Setup */
+		//	/* Test */
+		//	var response = _client.Get<string>("api/authentication");
 
-			/* Assert */
-			Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
-		}
+		//	/* Assert */
+		//	Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.Unauthorized));
+		//}
 	}
 }

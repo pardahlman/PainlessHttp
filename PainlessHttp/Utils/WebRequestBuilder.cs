@@ -8,12 +8,12 @@ using PainlessHttp.Serializers.Contracts;
 
 namespace PainlessHttp.Utils
 {
-	public class WebRequestWrapper
+	public class WebRequestBuilder
 	{
 		private readonly ContentType _defaultContentType;
 		private readonly List<IContentSerializer> _serializers;
 
-		public WebRequestWrapper(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
+		public WebRequestBuilder(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
 		{
 			_defaultContentType = defaultContentType;
 			_serializers = serializers.ToList();

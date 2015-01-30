@@ -68,7 +68,7 @@
     <Compile Include="Utils\ResponseTransformer.cs" />
     <Compile Include="Utils\UrlBuilder.cs" />
     <Compile Include="Utils\WebRequestWorker.cs" />
-    <Compile Include="Utils\WebRequestWrapper.cs" />
+    <Compile Include="Utils\WebRequestBuilder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
