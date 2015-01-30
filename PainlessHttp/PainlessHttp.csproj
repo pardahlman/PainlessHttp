@@ -61,6 +61,7 @@
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
     <Compile Include="Utils\AcceptHeaderMapper.cs" />
+    <Compile Include="Utils\UnsupportedMediaTypeResender.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />
