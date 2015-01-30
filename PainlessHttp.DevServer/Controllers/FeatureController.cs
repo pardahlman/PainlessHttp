@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -13,16 +14,18 @@ using PainlessHttp.Serializers.Typed;
 
 namespace PainlessHttp.DevServer.Controllers
 {
-	public class ContentTypeController : ApiController
+	public class FeatureController : ApiController
 	{
 		private readonly DefaultXmlSerializer _xmlSerializer;
 		private readonly DefaultJsonSerializer _jsonSerializer;
 
-		public ContentTypeController()
+		public FeatureController()
 		{
 			_xmlSerializer = new DefaultXmlSerializer();
 			_jsonSerializer = new DefaultJsonSerializer();
 		}
+
+		#region Feature: Content-Type
 
 		[Route("api/content-type")]
 		[HttpGet]
@@ -91,5 +94,48 @@ namespace PainlessHttp.DevServer.Controllers
 			response.Headers.Add("Accept", acceptHeader);
 			return response;
 		}
+
+		#endregion
+
+		#region Authentication
+
+		[Route("api/authentication")]
+		[HttpGet]
+		public HttpResponseMessage GetProtectedResource(string user = null, string pwd = null)
+		{
+			var authHeader = Request.Headers.Authorization;
+			if (authHeader == null)
+			{
+				var response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+				response.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue("Basic"));
+				return response;
+			}
+
+			var data = Convert.FromBase64String(authHeader.Parameter);
+			var decodedString = Encoding.UTF8.GetString(data).Split(':');
+			var providedUsername = decodedString[0];
+			var providedPassword = decodedString[1];
+			var authenticated = false;
+			if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pwd))
+			{
+				authenticated = string.Equals(providedUsername, providedPassword);
+			}
+			else
+			{
+				authenticated = string.Equals(providedUsername, user) && string.Equals(providedPassword, pwd);
+			}
+
+			if (authenticated)
+			{
+				return Request.CreateResponse(HttpStatusCode.OK, "You are authenticated");
+			}
+			else
+			{
+				return Request.CreateResponse(HttpStatusCode.Forbidden, "Authentication Failed");
+			}
+		}
+
+
+		#endregion
 	}
 }

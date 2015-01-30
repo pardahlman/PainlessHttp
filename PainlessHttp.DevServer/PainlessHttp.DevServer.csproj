@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\ContentTypeController.cs" />
+    <Compile Include="Controllers\FeatureController.cs" />
     <Compile Include="Controllers\TodoController.cs" />
     <Compile Include="Data\InMemoryTodoRepo.cs" />
     <Compile Include="Data\ITodoRepository.cs" />
