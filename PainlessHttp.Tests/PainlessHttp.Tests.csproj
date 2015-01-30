@@ -57,6 +57,7 @@
     <Compile Include="Serializers\Typed\DefaultJsonSerializerTests.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializerTests.cs" />
     <Compile Include="Serializers\SerializerTestClasses.cs" />
+    <Compile Include="Utils\AcceptHeaderMapperTests.cs" />
     <Compile Include="Utils\ClientUtilsTests.cs" />
     <Compile Include="Utils\HttpConverterTests.cs" />
     <Compile Include="Utils\ResponseTransformerTests.cs" />

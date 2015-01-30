@@ -44,6 +44,7 @@
     <Compile Include="Client\Contracts\IHttpClient.cs" />
     <Compile Include="Client\HttpClient.cs" />
     <Compile Include="Http\ContentType.cs" />
+    <Compile Include="Http\AcceptHeaderField.cs" />
     <Compile Include="Http\ContentTypes.cs" />
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
     <Compile Include="Http\HttpMethod.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Serializers\Defaults\DefaultXml.cs" />
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
+    <Compile Include="Utils\AcceptHeaderMapper.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\IHttpWebResponse.cs" />
