@@ -28,12 +28,8 @@ namespace PainlessHttp.Utils
 	
 		public static string ContentType(ContentType type)
 		{
-			var result =  ContentTypes
-								.Where(ct => ct.Item1 == type)
-								.Select(ct => ct.Item2)
-								.FirstOrDefault();
-
-			if (!string.IsNullOrWhiteSpace(result))
+			string result;
+			if (TryParseContentType(type, out result))
 			{
 				return result;
 			}
@@ -41,19 +37,46 @@ namespace PainlessHttp.Utils
 			throw new ArgumentException(string.Format("Unable to convert content type {0} to string.", type));
 		}
 
-		public static ContentType ContentType(string type)
+		public static bool TryParseContentType(ContentType type, out string result)
 		{
-			var result = ContentTypes
+			result = ContentTypes
+								.Where(ct => ct.Item1 == type)
+								.Select(ct => ct.Item2)
+								.FirstOrDefault();
+
+			return result != null;
+		}
+
+		public static bool TryParseContentType(string type, out ContentType result)
+		{
+			result = ContentTypes
 								.Where(ct => type.IndexOf(ct.Item2, StringComparison.InvariantCultureIgnoreCase) != -1)
 								.Select(ct => ct.Item1)
 								.FirstOrDefault();
 
-			if (result != Http.ContentType.Unknown)
+			return result != Http.ContentType.Unknown;
+		}
+
+		public static ContentType ContentType(string type)
+		{
+			ContentType result;
+			if (TryParseContentType(type, out result))
 			{
 				return result;
 			}
 
 			throw new ArgumentException(string.Format("Unable to convert content type {0} to enum.", type));
+		}
+
+		public static ContentType ContentTypeOrDefault(string type)
+		{
+			ContentType result;
+			if (TryParseContentType(type, out result))
+			{
+				return result;
+			}
+
+			return default (ContentType);
 		}
 
 		public static HttpMethod HttpMethod(string method)
