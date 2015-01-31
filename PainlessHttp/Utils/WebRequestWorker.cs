@@ -1,21 +1,26 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using PainlessHttp.Http;
 
 namespace PainlessHttp.Utils
 {
-	public class WebRequestWorker
+	public interface IWebRequestWorker
 	{
-		public static async Task<IHttpWebResponse> GetResponse(WebRequestSpecifications spec)
+		Task<IHttpWebResponse> GetResponseAsync(WebRequestSpecifications spec);
+		Task<HttpWebRequest> PrepareAsync(WebRequestSpecifications spec);
+		Task<HttpWebResponse> ReceiveAsync(HttpWebRequest req);
+	}
+
+	public class WebRequestWorker : IWebRequestWorker
+	{
+		public async Task<IHttpWebResponse> GetResponseAsync(WebRequestSpecifications spec)
 		{
 			var request = await PrepareAsync(spec);
 			return await ReceiveAsync(request);
 		}
 
-		public static async Task<HttpWebRequest> PrepareAsync(WebRequestSpecifications spec)
+		public async Task<HttpWebRequest> PrepareAsync(WebRequestSpecifications spec)
 		{
 			var req = (HttpWebRequest)WebRequest.Create(spec.Url);
 			req.AllowAutoRedirect = true;
@@ -39,7 +44,7 @@ namespace PainlessHttp.Utils
 			return req;
 		}
 
-		public async static Task<HttpWebResponse> ReceiveAsync(HttpWebRequest req)
+		public async Task<HttpWebResponse> ReceiveAsync(HttpWebRequest req)
 		{
 			try
 			{

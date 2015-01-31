@@ -30,8 +30,8 @@ namespace PainlessHttp.Utils
 		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
 		private readonly ContentType _defaultContentType;
-		private bool _negotiate;
 		private readonly WebRequestSpecifications _requestSpecs;
+		private readonly List<IRequestResender> _resenders;
 
 		internal FluentWebRequestBuilder(List<IContentSerializer> serializers, ContentType defaultContentType, string url)
 		{
@@ -41,6 +41,7 @@ namespace PainlessHttp.Utils
 				AcceptHeader = _accept
 			};
 			_serializers = serializers;
+			_resenders = new List<IRequestResender> {new UnsupportedMediaTypeResender(serializers, new WebRequestWorker())};
 			_defaultContentType = defaultContentType;
 		}
 
@@ -59,12 +60,13 @@ namespace PainlessHttp.Utils
 
 			if (type == ContentType.Negotiated)
 			{
-				_negotiate = true;
+				_requestSpecs .ContentNegotiation = true;
 				type = _defaultContentType;
 				_requestSpecs.ContentType = _defaultContentType;
 			}
 
 			_requestSpecs.ContentType = type;
+			_requestSpecs.Data = data;
 			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(type));
 			if (serializer == null)
 			{
@@ -77,34 +79,36 @@ namespace PainlessHttp.Utils
 
 		public RequestWrapper Prepare()
 		{
-			return new RequestWrapper(_requestSpecs, _negotiate);
+			return new RequestWrapper(_requestSpecs, _resenders);
 		}
 	}
 
 	public class RequestWrapper
 	{
 		private readonly WebRequestSpecifications _requestSpecs;
-		private readonly bool _negotiate;
+		private readonly List<IRequestResender> _resenders;
+		private readonly IWebRequestWorker _worker;
 
-		public RequestWrapper(WebRequestSpecifications requestSpecs, bool negotiate)
+		public RequestWrapper(WebRequestSpecifications requestSpecs, List<IRequestResender> resenders)
 		{
 			_requestSpecs = requestSpecs;
-			_negotiate = negotiate;
+			_resenders = resenders;
+			_worker = new WebRequestWorker();
+			
 		}
 
 		public async Task<IHttpWebResponse> PerformAsync()
 		{
-			var response = await WebRequestWorker.GetResponse(_requestSpecs);
-			
-			if (_negotiate && response.StatusCode == HttpStatusCode.UnsupportedMediaType)
+			var response = await _worker.GetResponseAsync(_requestSpecs);
+
+			var resender = _resenders.FirstOrDefault(r => r.IsApplicable(response));
+			if (resender == null)
 			{
-				var accept = response.Headers["Accept"];
-				_requestSpecs.ContentType = HttpConverter.ContentType(accept);
-				var negotiatedresponse = await WebRequestWorker.GetResponse(_requestSpecs);
-				return negotiatedresponse;
+				return response;
 			}
 
-			return response;
+			var resendReponse = await resender.ResendRequestAsync(response, _requestSpecs);
+			return resendReponse;
 		}
 	}
 }
