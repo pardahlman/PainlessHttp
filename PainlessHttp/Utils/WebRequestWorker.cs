@@ -52,15 +52,4 @@ namespace PainlessHttp.Utils
 			}
 		}
 	}
-
-	public class WebRequestSpecifications
-	{
-		public string Url { get; set; }
-		public string AcceptHeader { get; set; }
-
-		public Func<string> SerializeData { get; set; }
-		public ContentType ContentType { get; set; }
-		
-		public HttpMethod Method { get; set; }
-	}
 }
