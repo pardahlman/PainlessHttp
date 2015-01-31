@@ -40,7 +40,7 @@ namespace PainlessHttp.Utils
 	public class FluentWebRequestBuilder
 	{
 		private readonly WebRequestTools _tools;
-		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
+		private readonly string _accept = String.Join(",", ContentTypes.ApplicationJson, ContentTypes.ApplicationXml);
 		private readonly WebRequestSpecifications _requestSpecs;
 
 		internal FluentWebRequestBuilder(WebRequestTools tools, string url)
