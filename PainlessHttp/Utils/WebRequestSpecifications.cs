@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using PainlessHttp.Http;
 
 namespace PainlessHttp.Utils
@@ -14,5 +15,6 @@ namespace PainlessHttp.Utils
 		public bool ContentNegotiation { get; set; }
 		
 		public HttpMethod Method { get; set; }
+		public CredentialCache Credentials { get; set; }
 	}
 }
