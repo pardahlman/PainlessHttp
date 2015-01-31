@@ -62,6 +62,7 @@
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
     <Compile Include="Utils\AcceptHeaderMapper.cs" />
+    <Compile Include="Utils\CredentialMapper.cs" />
     <Compile Include="Utils\UnauthorizedResender.cs" />
     <Compile Include="Utils\UnsupportedMediaTypeResender.cs" />
     <Compile Include="Utils\ClientUtils.cs" />

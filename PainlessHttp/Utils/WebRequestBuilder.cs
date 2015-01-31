@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using PainlessHttp.Client.Configuration;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
@@ -10,39 +11,46 @@ namespace PainlessHttp.Utils
 {
 	public class WebRequestBuilder
 	{
-		private readonly ContentType _defaultContentType;
-		private readonly List<IContentSerializer> _serializers;
+		private readonly WebRequestTools _tools;
 
-		public WebRequestBuilder(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
+		public WebRequestBuilder(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType, Action<WebRequest> webrequestModifier, IEnumerable<Credential> credentials)
 		{
-			_defaultContentType = defaultContentType;
-			_serializers = serializers.ToList();
+			var credentialMapper = new CredentialMapper();
+			var worker = new WebRequestWorker(webrequestModifier, credentialMapper.Map(credentials));
+			
+			_tools = new WebRequestTools
+			{
+				DefaultContentType = defaultContentType == ContentType.Unknown ? ContentType.ApplicationJson : defaultContentType,
+				Serializers = serializers.ToList(),
+				RequestModifier = webrequestModifier,
+				Resenders = new List<IRequestResender>
+				{
+					new UnsupportedMediaTypeResender(serializers.ToList(), worker)
+				},
+				RequestWorker = worker 
+			};
 		}
 
 		public FluentWebRequestBuilder WithUrl(string url)
 		{
-			return new FluentWebRequestBuilder(_serializers, _defaultContentType, url);
+			return new FluentWebRequestBuilder(_tools, url);
 		}
 	}
 
 	public class FluentWebRequestBuilder
 	{
-		private readonly List<IContentSerializer> _serializers;
+		private readonly WebRequestTools _tools;
 		private readonly string _accept = String.Join(";", ContentTypes.TextHtml, ContentTypes.ApplicationXml, ContentTypes.ApplicationJson);
-		private readonly ContentType _defaultContentType;
 		private readonly WebRequestSpecifications _requestSpecs;
-		private readonly List<IRequestResender> _resenders;
 
-		internal FluentWebRequestBuilder(List<IContentSerializer> serializers, ContentType defaultContentType, string url)
+		internal FluentWebRequestBuilder(WebRequestTools tools, string url)
 		{
+			_tools = tools;
 			_requestSpecs = new WebRequestSpecifications
 			{
 				Url = url,
-				AcceptHeader = _accept
+				AcceptHeader = _accept,
 			};
-			_serializers = serializers;
-			_resenders = new List<IRequestResender> {new UnsupportedMediaTypeResender(serializers, new WebRequestWorker())};
-			_defaultContentType = defaultContentType;
 		}
 
 		public FluentWebRequestBuilder WithMethod(HttpMethod method)
@@ -61,13 +69,13 @@ namespace PainlessHttp.Utils
 			if (type == ContentType.Negotiated)
 			{
 				_requestSpecs .ContentNegotiation = true;
-				type = _defaultContentType;
-				_requestSpecs.ContentType = _defaultContentType;
+				type = _tools.DefaultContentType;
+				_requestSpecs.ContentType = _tools.DefaultContentType;
 			}
 
 			_requestSpecs.ContentType = type;
 			_requestSpecs.Data = data;
-			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(type));
+			var serializer = _tools.Serializers.FirstOrDefault(s => s.ContentType.Contains(type));
 			if (serializer == null)
 			{
 				throw new Exception(string.Format("No Serializer registered for {0}", type));
@@ -79,29 +87,27 @@ namespace PainlessHttp.Utils
 
 		public RequestWrapper Prepare()
 		{
-			return new RequestWrapper(_requestSpecs, _resenders);
+			return new RequestWrapper(_requestSpecs, _tools);
 		}
 	}
 
 	public class RequestWrapper
 	{
 		private readonly WebRequestSpecifications _requestSpecs;
-		private readonly List<IRequestResender> _resenders;
-		private readonly IWebRequestWorker _worker;
+		private readonly WebRequestTools _tools;
 
-		public RequestWrapper(WebRequestSpecifications requestSpecs, List<IRequestResender> resenders)
+		internal RequestWrapper(WebRequestSpecifications requestSpecs, WebRequestTools tools)
 		{
 			_requestSpecs = requestSpecs;
-			_resenders = resenders;
-			_worker = new WebRequestWorker();
+			_tools = tools;
 			
 		}
 
 		public async Task<IHttpWebResponse> PerformAsync()
 		{
-			var response = await _worker.GetResponseAsync(_requestSpecs);
+			var response = await _tools.RequestWorker.GetResponseAsync(_requestSpecs);
 
-			var resender = _resenders.FirstOrDefault(r => r.IsApplicable(response));
+			var resender = _tools.Resenders.FirstOrDefault(r => r.IsApplicable(response));
 			if (resender == null)
 			{
 				return response;
@@ -110,5 +116,14 @@ namespace PainlessHttp.Utils
 			var resendReponse = await resender.ResendRequestAsync(response, _requestSpecs);
 			return resendReponse;
 		}
+	}
+
+	internal class WebRequestTools
+	{
+		public ContentType DefaultContentType { get; set; }
+		public List<IContentSerializer> Serializers { get; set; }
+		public Action<WebRequest> RequestModifier { get; set; }
+		public WebRequestWorker RequestWorker { get; set; }
+		public List<IRequestResender> Resenders { get; set; }
 	}
 }

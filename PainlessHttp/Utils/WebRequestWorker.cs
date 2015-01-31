@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,15 @@ namespace PainlessHttp.Utils
 
 	public class WebRequestWorker : IWebRequestWorker
 	{
+		private readonly Action<WebRequest> _webrequestModifier;
+		private readonly CredentialCache _credentials;
+
+		public WebRequestWorker(Action<WebRequest> webrequestModifier, CredentialCache credentials)
+		{
+			_webrequestModifier = webrequestModifier;
+			_credentials = credentials;
+		}
+
 		public async Task<IHttpWebResponse> GetResponseAsync(WebRequestSpecifications spec)
 		{
 			var request = await PrepareAsync(spec);
@@ -23,10 +33,22 @@ namespace PainlessHttp.Utils
 		public async Task<HttpWebRequest> PrepareAsync(WebRequestSpecifications spec)
 		{
 			var req = (HttpWebRequest)WebRequest.Create(spec.Url);
+			
+			// Overrideable props up here
 			req.AllowAutoRedirect = true;
+			req.PreAuthenticate = true;
+			req.Accept = spec.AcceptHeader;
+			
+			if (_webrequestModifier != null)
+			{
+				_webrequestModifier(req);
+			}
+			
+			// Fixed props down here.
+			req.Credentials = _credentials;
 			req.UserAgent = ClientUtils.GetUserAgent();
 			req.Method = spec.Method.ToString().ToUpper();
-			req.Accept = spec.AcceptHeader;
+			
 
 			if (spec.SerializeData != null)
 			{

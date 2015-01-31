@@ -30,6 +30,7 @@ namespace PainlessHttp.Client.Configuration
 			/// </summary>
 			public ContentType ContentType { get; set; }
 
+			public Action<WebRequest> WebrequestModifier { get; set; }
 			public List<Credential> Credentials { get; set; }
 
 			public AdvancedConfiguration()

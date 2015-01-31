@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.CodeDom;
+using System.Linq;
 using System.Threading.Tasks;
 using PainlessHttp.Client.Configuration;
 using PainlessHttp.Client.Contracts;
@@ -28,7 +29,7 @@ namespace PainlessHttp.Client
 				: config.Advanced.ContentType;
  
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
-			_reqBuilder = new WebRequestBuilder(serializers, defaultContentType);
+			_reqBuilder = new WebRequestBuilder(serializers, defaultContentType, config.Advanced.WebrequestModifier, config.Advanced.Credentials);
 			_responseTransformer = new ResponseTransformer(serializers);
 		}
 
