@@ -8,6 +8,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Routing;
+using PainlessHttp.DevServer.Data;
 using PainlessHttp.DevServer.Model;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Typed;
@@ -18,11 +19,13 @@ namespace PainlessHttp.DevServer.Controllers
 	{
 		private readonly DefaultXmlSerializer _xmlSerializer;
 		private readonly DefaultJsonSerializer _jsonSerializer;
+		private RequestRepo _requestRepo;
 
 		public FeatureController()
 		{
 			_xmlSerializer = new DefaultXmlSerializer();
 			_jsonSerializer = new DefaultJsonSerializer();
+			_requestRepo = RequestRepo.Instance;
 		}
 
 		#region Feature: Content-Type
@@ -103,6 +106,7 @@ namespace PainlessHttp.DevServer.Controllers
 		[HttpGet]
 		public HttpResponseMessage GetProtectedResource(string user = null, string pwd = null)
 		{
+			_requestRepo.SaveRequestIfPossible(Request);
 			var authHeader = Request.Headers.Authorization;
 			if (authHeader == null)
 			{
