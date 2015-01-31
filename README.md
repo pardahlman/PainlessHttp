@@ -1,11 +1,12 @@
 # PainlessHttp
 
-No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!
+_No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!_
 
-* ``GET``, ``POST``, ``PUT`` and ``DELETE``
+* async ``GET``, ``POST``, ``PUT`` and ``DELETE``
 * Content Negotiation
+* Authentication
 * Plugable serializers
-* No external references to NuGets (_or any other libraries for that matter!_)
+* No external references to NuGets (_just Microsoft Core Libs!_)
 
 Getting typed metadata async has never been easier
 
@@ -156,6 +157,41 @@ If the server responds with status code ``UnsupportedMediaType`` or the Accept h
   var overrideType = ContentType.ApplicationJson;
   var created = _client.PostAsync<string>("/api/todo", newTodo, null, overrideType);
 ```
+
+### Customizing request
+The default behavior of PainlessHttp should satisfy most of the developer out there. However, if you for some reason want to control headers and other properties of the request that is sent, there is a way to do so. With the ``WebrequestModifier`` you get access to the raw request and can do all sorts of things, like adding you custom request header.
+```csharp
+  var config = new HttpClientConfiguration
+  {
+    BaseUrl = "http://localhost:1337/",
+    Advanced =
+    {
+      WebrequestModifier = req => req.Headers.Add("X-Custom-Header", "Custom-Value")
+    }
+  };
+```
+
+### Authentication
+Authentication is handled with though ``System.Het.CredentialCache``, and is registered in the configuration
+```csharp
+  var config = new HttpClientConfiguration
+  {
+    BaseUrl = "http://localhost:1337/",
+    Advanced =
+    {
+			Credentials =
+			{
+				new Credential
+				{
+					UserName = "pardahlman",
+					Password = "epic-password",
+					AuthTypes = { AuthenticationType.Basic }
+				}
+			}
+		}
+	};
+```
+
 ## Credits
 
 Author: Pär Dahlman
