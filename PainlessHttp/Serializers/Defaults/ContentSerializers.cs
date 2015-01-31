@@ -9,7 +9,8 @@ namespace PainlessHttp.Serializers.Defaults
 		public static readonly List<IContentSerializer> Defaults = new List<IContentSerializer>
 		{
 			new DefaultJsonSerializer(),
-			new DefaultXmlSerializer()
+			new DefaultXmlSerializer(),
+			new DefaultTextPlainSerializer()
 		};
 	}
 }

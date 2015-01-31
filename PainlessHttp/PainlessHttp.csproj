@@ -60,6 +60,7 @@
     <Compile Include="Serializers\Defaults\DefaultJson.cs" />
     <Compile Include="Serializers\Defaults\DefaultXml.cs" />
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
+    <Compile Include="Serializers\Typed\DefaultTextPlainSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
     <Compile Include="Utils\AcceptHeaderMapper.cs" />
     <Compile Include="Utils\CredentialMapper.cs" />
