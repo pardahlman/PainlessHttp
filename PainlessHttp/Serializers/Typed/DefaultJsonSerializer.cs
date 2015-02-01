@@ -57,6 +57,11 @@ namespace PainlessHttp.Serializers.Typed
 
 		public T Deserialize<T>(string data)
 		{
+			if (string.IsNullOrWhiteSpace(data))
+			{
+				return default(T);
+			}
+
 			var serializer = GetSerializer(typeof (T));
 
 			T result;

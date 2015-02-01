@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
@@ -23,23 +24,22 @@ namespace PainlessHttp.Utils
 			_defaultContentType = defaultContentType;
 		}
 
-		public async Task<IHttpResponse<T>> TransformAsync<T>(IHttpWebResponse raw) where T : class 
+		public async Task<IHttpResponse<T>> TransformAsync<T>(IHttpWebResponse raw) where T : class
 		{
-			var payloadTask = DeserializeAsync<T>(raw);
-			return await payloadTask.ContinueWith(task =>
+			var rawBody = await ReadBodyAsync(raw);
+
+			var result = new HttpResponse<T>
 			{
-				IHttpResponse<T> result = new HttpResponse<T>
-				{
-					StatusCode = raw.StatusCode,
-					Body = task.Result,
-				};
-				return result;
-			});
+				StatusCode = raw.StatusCode,
+				RawBody = rawBody,
+				Body = Deserialize<T>(rawBody, raw)
+			};
+
+			return result;
 		}
 
-		private async Task<T> DeserializeAsync<T>(IHttpWebResponse raw) where T : class
+		private T Deserialize<T>(string body, IHttpWebResponse raw) where T : class
 		{
-
 			var contentType = ExtractContentTypeFromHeaders(raw.Headers);
 			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(contentType));
 			if (serializer == null)
@@ -47,18 +47,12 @@ namespace PainlessHttp.Utils
 				throw new InstanceNotFoundException(string.Format("No registered serializer found for content type '{0}'.", contentType));
 			}
 
-			var readTask = ReadBodyAsync(raw);
-			var deserializeTask = await readTask.ContinueWith(task =>
+			if (typeof(T) == typeof(string))
 			{
-				if (typeof(T) == typeof(string))
-				{
-					return task.Result as T;
-				}
-				var body = task.Result;
-				var typedBody = serializer.Deserialize<T>(body);
-				return typedBody;
-			});
-			return deserializeTask;
+				return body as T;
+			}
+			var typedBody = serializer.Deserialize<T>(body);
+			return typedBody;
 		}
 
 		private ContentType ExtractContentTypeFromHeaders(WebHeaderCollection headers)

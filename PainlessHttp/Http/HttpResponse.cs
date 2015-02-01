@@ -7,5 +7,6 @@ namespace PainlessHttp.Http
 	{
 		public HttpStatusCode StatusCode { get; set; }
 		public T Body { get; set; }
+		public string RawBody { get; set; }
 	}
 }

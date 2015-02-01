@@ -6,6 +6,6 @@ namespace PainlessHttp.Http.Contracts
 	{
 		HttpStatusCode StatusCode { get;  }
 		T Body { get; }
+		string RawBody { get; set; }
 	}
-
 }
