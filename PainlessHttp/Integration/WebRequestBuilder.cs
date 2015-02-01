@@ -15,9 +15,9 @@ namespace PainlessHttp.Integration
 	{
 		private readonly WebRequestTools _tools;
 
-		public WebRequestBuilder(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType, Action<WebRequest> webrequestModifier, IEnumerable<Credential> credentials)
+		public WebRequestBuilder(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType, Action<WebRequest> webrequestModifier, NetworkCredential credentials)
 		{
-			var worker = new WebRequestWorker(webrequestModifier, ClientUtils.CreateCredentials(credentials));
+			var worker = new WebRequestWorker(webrequestModifier, credentials);
 			
 			_tools = new WebRequestTools
 			{

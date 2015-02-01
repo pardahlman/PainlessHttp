@@ -26,16 +26,7 @@ namespace PainlessHttp.IntegrationTests.Features
 				Advanced =
 				{
 					WebrequestModifier = w => w.Headers.Add("X-Request-Id", _testRequestId),
-					Credentials =
-					{
-						new Credential
-						{
-							UserName = "pardahlman",
-							Password = "password",
-							Domain = WebApiSetupFixture.BaseAddress,
-							AuthTypes = { AuthenticationType.Basic }
-						}
-					}
+					Credentials = new NetworkCredential("pardahlman", "password")
 				}
 			};
 

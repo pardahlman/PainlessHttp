@@ -19,18 +19,5 @@ namespace PainlessHttp.Utils
 			}
 			return string.Format("{0} {1}", _painlessAgent, _version);
 		}
-
-		public static CredentialCache CreateCredentials(IEnumerable<Credential> credentials)
-		{
-			var result = new CredentialCache();
-			foreach (var credential in credentials)
-			{
-				foreach (var type in credential.AuthTypes)
-				{
-					result.Add(new Uri(credential.Domain), type.ToString(), new NetworkCredential(credential.UserName, credential.Password));
-				}
-			}
-			return result;
-		}
 	}
 }

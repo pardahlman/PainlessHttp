@@ -31,26 +31,12 @@ namespace PainlessHttp.Client
 			public ContentType ContentType { get; set; }
 
 			public Action<WebRequest> WebrequestModifier { get; set; }
-			public List<Credential> Credentials { get; set; }
+			public NetworkCredential Credentials { get; set; }
 
 			public AdvancedConfiguration()
 			{
 				Serializers = new List<IContentSerializer>();
-				Credentials = new List<Credential>();
 			}
-		}
-	}
-
-	public class Credential
-	{
-		public string UserName { get; set; }
-		public string Password { get; set; }
-		public string Domain { get; set; }
-		public List<AuthenticationType> AuthTypes { get; set; }
-
-		public Credential()
-		{
-			AuthTypes = new List<AuthenticationType>();
 		}
 	}
 }

@@ -17,9 +17,9 @@ namespace PainlessHttp.Integration
 	public class WebRequestWorker : IWebRequestWorker
 	{
 		private readonly Action<WebRequest> _webrequestModifier;
-		private readonly CredentialCache _credentials;
+		private readonly NetworkCredential _credentials;
 
-		public WebRequestWorker(Action<WebRequest> webrequestModifier, CredentialCache credentials)
+		public WebRequestWorker(Action<WebRequest> webrequestModifier, NetworkCredential credentials)
 		{
 			_webrequestModifier = webrequestModifier;
 			_credentials = credentials;

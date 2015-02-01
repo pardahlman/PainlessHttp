@@ -172,22 +172,14 @@ The default behavior of PainlessHttp should satisfy most of the developer out th
 ```
 
 ### Authentication
-Authentication is handled with though ``System.Het.CredentialCache``, and is registered in the configuration
+Authentication is handled with ``System.Het.NetworkCredential``, and is registered in the configuration
 ```csharp
   var config = new HttpClientConfiguration
   {
     BaseUrl = "http://localhost:1337/",
     Advanced =
     {
-			Credentials =
-			{
-				new Credential
-				{
-					UserName = "pardahlman",
-					Password = "epic-password",
-					AuthTypes = { AuthenticationType.Basic }
-				}
-			}
+			Credentials = Credentials = new NetworkCredential("pardahlman", "password")
 		}
 	};
 ```
