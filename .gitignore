@@ -18,7 +18,6 @@ _NCrunch_PainlessHttp
 *.suo
 *.user
 *.sln.docstates
-Threepio.Web/Properties/PublishProfiles/
 
 # Build results
 [Dd]ebug/
@@ -43,9 +42,7 @@ x64/
 *.vspscc
 *.vssscc
 .builds
-threepio.*.min.js
-threepio.min.js
-threepio.*.min.css
+*.nupkg
 
 # Visual C++ cache files
 ipch/
