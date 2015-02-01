@@ -22,7 +22,7 @@ namespace PainlessHttp.Client
 			/// <summary>
 			/// Override the default content serializers.
 			/// </summary>
-			public IEnumerable<IContentSerializer> Serializers { get; set; }
+			public IList<IContentSerializer> Serializers { get; set; }
 
 			/// <summary>
 			/// Specify the default content type that the client will use if no
