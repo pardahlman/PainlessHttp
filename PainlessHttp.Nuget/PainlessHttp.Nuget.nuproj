@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Net45|AnyCPU">
+      <Configuration>Net45</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>c7679876-b664-4f23-9671-12785dd1a523</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>PainlessHttp</Id>
+    <Version>0.8.0-alpha</Version>
+    <Title>PainlessHttp</Title>
+    <Authors>par.dahlman</Authors>
+    <Owners>par.dahlman</Owners>
+    <Summary>A dependency-free http client for async requests with typed responses, simple configuration and much, much more. For more information and source code, go to the projects homepage</Summary>
+    <Description>PainlessHttp is a really small library for performing http operations in an easy way. Configuration has never been easier, no manual needed.</Description>
+    <ReleaseNotes>PainlessHttp $(Version)</ReleaseNotes>
+    <ProjectUrl>http://painless.pardahlman.se</ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © par.dahlman</Copyright>
+    <Tags>PainlessHttp Http</Tags>
+    <GenerateSymbolPackage>false</GenerateSymbolPackage>
+    <IconUrl>http://painless.pardahlman.se/icon.png</IconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PainlessHttp\PainlessHttp.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>

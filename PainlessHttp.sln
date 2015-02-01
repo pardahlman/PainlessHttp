@@ -19,6 +19,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.Serializer.Jso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.IntegrationTests", "PainlessHttp.IntegrationTests\PainlessHttp.IntegrationTests.csproj", "{F8ECB652-C9E0-446B-9A64-B6D920081376}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{7C03918C-5313-4840-97D5-D5867728281A}"
+EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PainlessHttp.Nuget", "PainlessHttp.Nuget\PainlessHttp.Nuget.nuproj", "{C7679876-B664-4F23-9671-12785DD1A523}"
+EndProject
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "Painless.Serializer.JsonNet.NuGet", "Painless.Serializer.JsonNet.NuGet\Painless.Serializer.JsonNet.NuGet.nuproj", "{E7411A4C-46A6-4270-B45E-D827518FE61C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +55,14 @@ Global
 		{F8ECB652-C9E0-446B-9A64-B6D920081376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8ECB652-C9E0-446B-9A64-B6D920081376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8ECB652-C9E0-446B-9A64-B6D920081376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7679876-B664-4F23-9671-12785DD1A523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7679876-B664-4F23-9671-12785DD1A523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7679876-B664-4F23-9671-12785DD1A523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7679876-B664-4F23-9671-12785DD1A523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,5 +72,7 @@ Global
 		{E383E517-2F67-40E8-B9F3-A82473A5F006} = {78A5AA8A-146B-482A-A680-D6179FD129F5}
 		{C7256164-4D19-40BE-9CA6-42C3CB8EB164} = {78A5AA8A-146B-482A-A680-D6179FD129F5}
 		{F8ECB652-C9E0-446B-9A64-B6D920081376} = {650C8860-9DDF-42CB-B219-D0DC34F46BF6}
+		{C7679876-B664-4F23-9671-12785DD1A523} = {7C03918C-5313-4840-97D5-D5867728281A}
+		{E7411A4C-46A6-4270-B45E-D827518FE61C} = {7C03918C-5313-4840-97D5-D5867728281A}
 	EndGlobalSection
 EndGlobal

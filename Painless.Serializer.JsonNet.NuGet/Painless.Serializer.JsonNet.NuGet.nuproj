@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>e7411a4c-46a6-4270-b45e-d827518fe61c</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>Painless.Serializer.JsonNet</Id>
+    <Version>0.8.0-alpha</Version>
+    <Title>PainlessHttp: Json.Net Serializer</Title>
+    <Authors>par.dahlman</Authors>
+    <Owners>par.dahlman</Owners>
+    <Summary>The PainlessHttp client has plugable serialzers. This is a implementation of JsonNet's popular json serializer.</Summary>
+    <Description>The PainlessHttp client has plugable serialzers. This is a implementation of JsonNet's popular json serializer. For more information on usage, visit the project homepage.</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>http://painless.pardahlman.se</ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © par.dahlman</Copyright>
+    <Tags>Painless Serializer JsonNet</Tags>
+    <IconUrl>http://painless.pardahlman.se/icon.png</IconUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PainlessHttp.Serializer.JsonNet\PainlessHttp.Serializer.JsonNet.csproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>
