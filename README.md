@@ -159,7 +159,7 @@ If the server responds with status code ``UnsupportedMediaType`` or the Accept h
 ```
 
 ### Customizing request
-The default behavior of PainlessHttp should satisfy most of the developer out there. However, if you for some reason want to control headers and other properties of the request that is sent, there is a way to do so. With the ``WebrequestModifier`` you get access to the raw request and can do all sorts of things, like adding you custom request header.
+The default behavior of PainlessHttp should satisfy most of the developer out there. However, if you for some reason want to control manipulate properties of the request that is sent, there is a way to do so. With the ``WebrequestModifier`` you get access to the raw request and do all sorts of things, like adding you custom request header.
 ```csharp
   var config = new HttpClientConfiguration
   {
