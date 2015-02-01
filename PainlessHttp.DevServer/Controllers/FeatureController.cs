@@ -19,7 +19,7 @@ namespace PainlessHttp.DevServer.Controllers
 	{
 		private readonly DefaultXmlSerializer _xmlSerializer;
 		private readonly DefaultJsonSerializer _jsonSerializer;
-		private RequestRepo _requestRepo;
+		private readonly RequestRepo _requestRepo;
 
 		public FeatureController()
 		{
@@ -100,7 +100,7 @@ namespace PainlessHttp.DevServer.Controllers
 
 		#endregion
 
-		#region Authentication
+		#region Feature: Authentication
 
 		[Route("api/authentication")]
 		[HttpGet]
@@ -139,6 +139,22 @@ namespace PainlessHttp.DevServer.Controllers
 			}
 		}
 
+
+		#endregion
+
+		#region Feature: ErrorReponse
+		[Route("api/error-code")]
+		[HttpGet]
+		public HttpResponseMessage GetErrorRespnse(int statusCode = 400, string message = "add message query parameter to change this message")
+		{
+			var httpStatusCode = (HttpStatusCode) statusCode;
+			var response = new HttpResponseMessage()
+			{
+				StatusCode = httpStatusCode,
+				Content = new StringContent(message)
+			};
+			return response;
+		}
 
 		#endregion
 	}
