@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Net;
-using System.Threading.Tasks;
 using Moq;
 using NUnit.Framework;
 using PainlessHttp.Http;
-using PainlessHttp.Http.Contracts;
+using PainlessHttp.Integration;
+using PainlessHttp.Resenders;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Typed;
-using PainlessHttp.Utils;
-using HttpWebResponse = PainlessHttp.Utils.HttpWebResponse;
+using HttpWebResponse = PainlessHttp.Integration.HttpWebResponse;
 
-namespace PainlessHttp.Tests.Utils
+namespace PainlessHttp.Tests.Resenders
 {
 	[TestFixture]
 	public class UnsupportedMediaTypeResenderTests

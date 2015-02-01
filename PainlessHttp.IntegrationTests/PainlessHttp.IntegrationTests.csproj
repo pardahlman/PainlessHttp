@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Features\AuthenticationTests.cs" />
+    <Compile Include="Features\ContentNegotiationTests.cs" />
     <Compile Include="Methods\DeleteTests.cs" />
     <Compile Include="Methods\GetTests.cs" />
     <Compile Include="Methods\PostTests.cs" />

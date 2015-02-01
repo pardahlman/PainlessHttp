@@ -2,7 +2,7 @@
 using System.Net;
 using PainlessHttp.Http;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Integration
 {
 	public class WebRequestSpecifications
 	{

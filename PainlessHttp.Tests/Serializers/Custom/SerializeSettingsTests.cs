@@ -15,7 +15,7 @@ namespace PainlessHttp.Tests.Serializers.Custom
 			var expected = new[] {ContentType.ApplicationJson, ContentType.TextCsv};
 			
 			/* Test */
-			var result = SerializeSettings
+			var result = SerializerBulider
 					.For(expected)
 						.Serialize(o => string.Empty)
 						.Deserialize((s, t) => new object());
@@ -29,7 +29,7 @@ namespace PainlessHttp.Tests.Serializers.Custom
 		{
 			/* Setup */
 			var serializedCalled = false;
-			var serializer = SerializeSettings
+			var serializer = SerializerBulider
 				.For(ContentType.ApplicationJson)
 				.Serialize(o =>
 							{
@@ -50,7 +50,7 @@ namespace PainlessHttp.Tests.Serializers.Custom
 		{
 			/* Setup */
 			var deserializedCalled = false;
-			var serializer = SerializeSettings
+			var serializer = SerializerBulider
 				.For(ContentType.ApplicationJson)
 				.Serialize(o => string.Empty)
 				.Deserialize((s, t) =>

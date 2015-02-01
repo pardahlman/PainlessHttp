@@ -5,4 +5,9 @@
 		Unknown,
 		Basic
 	}
+
+	public class AuthenticationTypes
+	{
+		public const string Basic = "Basic";
+	}
 }

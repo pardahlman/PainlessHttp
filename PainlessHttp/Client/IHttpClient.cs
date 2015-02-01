@@ -2,7 +2,7 @@
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
 
-namespace PainlessHttp.Client.Contracts
+namespace PainlessHttp.Client
 {
 	interface IHttpClient
 	{

@@ -5,7 +5,6 @@ using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PainlessHttp.Client;
-using PainlessHttp.Client.Configuration;
 using PainlessHttp.DevServer.Model;
 using PainlessHttp.Http;
 using PainlessHttp.Serializer.JsonNet;
@@ -20,7 +19,7 @@ namespace PainlessHttp.Sandbox
 	{
 		static void Main(string[] args)
 		{
-			var config = new HttpClientConfiguration
+			var config = new Configuration
 			{
 				BaseUrl = "http://localhost:1337/",
 				Advanced =
@@ -40,7 +39,7 @@ namespace PainlessHttp.Sandbox
 			var xmlBack = xmlSerializer.Deserialize<Todo>(todoXml);
 
 			// Create a custom serializer
-			var custom = SerializeSettings
+			var custom = SerializerBulider
 				.For(ContentType.ApplicationJson)
 					.Serialize(NewtonSoft.Serialize)
 					.Deserialize(DefaultJson.Deserialize);

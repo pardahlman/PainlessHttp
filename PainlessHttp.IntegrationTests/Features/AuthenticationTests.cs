@@ -3,7 +3,6 @@ using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using PainlessHttp.Client;
-using PainlessHttp.Client.Configuration;
 using PainlessHttp.DevServer.Data;
 using PainlessHttp.Http;
 
@@ -21,7 +20,7 @@ namespace PainlessHttp.IntegrationTests.Features
 		{
 			_testRequestId = Guid.NewGuid().ToString();
 			_requestRepo = RequestRepo.Instance;
-			var config = new HttpClientConfiguration
+			var config = new Configuration
 			{
 				BaseUrl = WebApiSetupFixture.BaseAddress,
 				Advanced =

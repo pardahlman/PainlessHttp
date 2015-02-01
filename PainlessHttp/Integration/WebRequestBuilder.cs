@@ -5,9 +5,11 @@ using System.Net;
 using System.Threading.Tasks;
 using PainlessHttp.Client;
 using PainlessHttp.Http;
+using PainlessHttp.Resenders;
 using PainlessHttp.Serializers.Contracts;
+using PainlessHttp.Utils;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Integration
 {
 	public class WebRequestBuilder
 	{
@@ -19,14 +21,11 @@ namespace PainlessHttp.Utils
 			
 			_tools = new WebRequestTools
 			{
-				DefaultContentType = defaultContentType == ContentType.Unknown ? ContentType.ApplicationJson : defaultContentType,
+				RequestWorker = worker,
 				Serializers = serializers.ToList(),
 				RequestModifier = webrequestModifier,
-				Resenders = new List<IRequestResender>
-				{
-					new UnsupportedMediaTypeResender(serializers.ToList(), worker)
-				},
-				RequestWorker = worker 
+				Resenders = new List<IRequestResender> { new UnsupportedMediaTypeResender(serializers.ToList(), worker) },
+				DefaultContentType = defaultContentType == ContentType.Unknown ? ContentType.ApplicationJson : defaultContentType,
 			};
 		}
 
@@ -48,7 +47,7 @@ namespace PainlessHttp.Utils
 			_requestSpecs = new WebRequestSpecifications
 			{
 				Url = url,
-				AcceptHeader = _accept,
+				AcceptHeader = _accept
 			};
 		}
 
@@ -64,17 +63,15 @@ namespace PainlessHttp.Utils
 			{
 				return this;
 			}
-
+			_requestSpecs.ContentType = type;
 			if (type == ContentType.Negotiated)
 			{
 				_requestSpecs .ContentNegotiation = true;
-				type = _tools.DefaultContentType;
 				_requestSpecs.ContentType = _tools.DefaultContentType;
 			}
 
-			_requestSpecs.ContentType = type;
 			_requestSpecs.Data = data;
-			var serializer = _tools.Serializers.FirstOrDefault(s => s.ContentType.Contains(type));
+			var serializer = _tools.Serializers.FirstOrDefault(s => s.ContentType.Contains(_requestSpecs.ContentType));
 			if (serializer == null)
 			{
 				throw new Exception(string.Format("No Serializer registered for {0}", type));
@@ -99,7 +96,6 @@ namespace PainlessHttp.Utils
 		{
 			_requestSpecs = requestSpecs;
 			_tools = tools;
-			
 		}
 
 		public async Task<IHttpWebResponse> PerformAsync()
@@ -115,14 +111,5 @@ namespace PainlessHttp.Utils
 			var resendReponse = await resender.ResendRequestAsync(response, _requestSpecs);
 			return resendReponse;
 		}
-	}
-
-	internal class WebRequestTools
-	{
-		public ContentType DefaultContentType { get; set; }
-		public List<IContentSerializer> Serializers { get; set; }
-		public Action<WebRequest> RequestModifier { get; set; }
-		public WebRequestWorker RequestWorker { get; set; }
-		public List<IRequestResender> Resenders { get; set; }
 	}
 }

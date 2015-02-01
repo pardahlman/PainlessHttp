@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using NUnit.Framework;
 using PainlessHttp.Client;
-using PainlessHttp.Client.Configuration;
 using PainlessHttp.DevServer.Data;
 using PainlessHttp.DevServer.Model;
 
@@ -16,7 +15,7 @@ namespace PainlessHttp.IntegrationTests.Methods
 		[SetUp]
 		public void Setup()
 		{
-			var config = new HttpClientConfiguration
+			var config = new Configuration
 			{
 				BaseUrl = WebApiSetupFixture.BaseAddress
 			};

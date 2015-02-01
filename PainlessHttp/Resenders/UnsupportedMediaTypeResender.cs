@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
+using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Contracts;
+using PainlessHttp.Utils;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Resenders
 {
 	public class UnsupportedMediaTypeResender : IRequestResender
 	{
@@ -101,11 +103,5 @@ namespace PainlessHttp.Utils
 				yield return HttpConverter.ContentTypeOrDefault(header.ContentType);
 			}
 		}
-	}
-
-	public interface IRequestResender
-	{
-		bool IsApplicable(IHttpWebResponse response);
-		Task<IHttpWebResponse> ResendRequestAsync(IHttpWebResponse response, WebRequestSpecifications specs);
 	}
 }

@@ -15,7 +15,7 @@ namespace PainlessHttp.Serializers.Defaults
 
 		public static IContentSerializer GetSerializer()
 		{
-			return SerializeSettings
+			return SerializerBulider
 						.For(ContentType.ApplicationJson)
 						.Serialize(Serialize)
 						.Deserialize(Deserialize);

@@ -1,10 +1,9 @@
 ﻿using System.CodeDom;
 using System.Linq;
 using System.Threading.Tasks;
-using PainlessHttp.Client.Configuration;
-using PainlessHttp.Client.Contracts;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
+using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Defaults;
 using PainlessHttp.Utils;
 
@@ -15,12 +14,12 @@ namespace PainlessHttp.Client
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestBuilder _reqBuilder;
 		private readonly ResponseTransformer _responseTransformer;
-		public HttpClient(string baseUrl) : this(new HttpClientConfiguration{BaseUrl = baseUrl})
+		public HttpClient(string baseUrl) : this(new Configuration{BaseUrl = baseUrl})
 		{
 			/* Don't duplicate code here.*/
 		}
 		
-		public HttpClient(HttpClientConfiguration config)
+		public HttpClient(Configuration config)
 		{
 			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
 
@@ -30,7 +29,7 @@ namespace PainlessHttp.Client
  
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			_reqBuilder = new WebRequestBuilder(serializers, defaultContentType, config.Advanced.WebrequestModifier, config.Advanced.Credentials);
-			_responseTransformer = new ResponseTransformer(serializers);
+			_responseTransformer = new ResponseTransformer(serializers, defaultContentType);
 		}
 
 		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 

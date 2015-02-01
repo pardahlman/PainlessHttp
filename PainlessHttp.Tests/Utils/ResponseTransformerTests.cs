@@ -5,6 +5,7 @@ using System.Net;
 using Moq;
 using NUnit.Framework;
 using PainlessHttp.Http;
+using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Defaults;
 using PainlessHttp.Utils;
@@ -21,7 +22,7 @@ namespace PainlessHttp.Tests.Utils
 		public void Setup()
 		{
 			_serializers = new List<IContentSerializer>();
-			_transformer = new ResponseTransformer(_serializers);
+			_transformer = new ResponseTransformer(_serializers, ContentType.ApplicationJson);
 
 			_rawResponse = new Mock<IHttpWebResponse>();
 			_rawResponse

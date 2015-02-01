@@ -7,6 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
+using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Contracts;
 
 namespace PainlessHttp.Utils
@@ -14,10 +15,12 @@ namespace PainlessHttp.Utils
 	public class ResponseTransformer
 	{
 		private readonly IEnumerable<IContentSerializer> _serializers;
+		private readonly ContentType _defaultContentType;
 
-		public ResponseTransformer(IEnumerable<IContentSerializer> serializers)
+		public ResponseTransformer(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
 		{
 			_serializers = serializers;
+			_defaultContentType = defaultContentType;
 		}
 
 		public async Task<IHttpResponse<T>> TransformAsync<T>(IHttpWebResponse raw) where T : class 
@@ -28,7 +31,7 @@ namespace PainlessHttp.Utils
 				IHttpResponse<T> result = new HttpResponse<T>
 				{
 					StatusCode = raw.StatusCode,
-					Body = task.Result
+					Body = task.Result,
 				};
 				return result;
 			});
@@ -60,16 +63,15 @@ namespace PainlessHttp.Utils
 
 		private ContentType ExtractContentTypeFromHeaders(WebHeaderCollection headers)
 		{
-			var defaultContentType = ContentType.ApplicationJson;
 			if (headers == null)
 			{
-				return defaultContentType;
+				return _defaultContentType;
 			}
 
 			var contentTypeHeader = headers[HttpResponseHeader.ContentType];
 			if (contentTypeHeader == null)
 			{
-				return defaultContentType;
+				return _defaultContentType;
 			}
 
 			var contentType = HttpConverter.ContentType(contentTypeHeader);

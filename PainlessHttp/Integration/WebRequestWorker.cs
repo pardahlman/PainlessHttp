@@ -3,8 +3,9 @@ using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using PainlessHttp.Utils;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Integration
 {
 	public interface IWebRequestWorker
 	{

@@ -4,14 +4,14 @@ using System.Net;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
-namespace PainlessHttp.Client.Configuration
+namespace PainlessHttp.Client
 {
-	public class HttpClientConfiguration
+	public class Configuration
 	{
 		public string BaseUrl { get; set; }
 		public AdvancedConfiguration Advanced { get; set; }
 
-		public HttpClientConfiguration()
+		public Configuration()
 		{
 			Advanced = new AdvancedConfiguration();
 		}

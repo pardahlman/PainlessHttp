@@ -33,28 +33,24 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\Configuration\HttpClientConfiguration.cs" />
-    <Compile Include="Client\Contracts\IHttpClient.cs" />
     <Compile Include="Client\HttpClient.cs" />
+    <Compile Include="Client\Configuration.cs" />
+    <Compile Include="Client\IHttpClient.cs" />
     <Compile Include="Http\AuthenticationType.cs" />
     <Compile Include="Http\ContentType.cs" />
     <Compile Include="Http\AcceptHeaderField.cs" />
-    <Compile Include="Http\ContentTypes.cs" />
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
     <Compile Include="Http\HttpMethod.cs" />
-    <Compile Include="Http\HttpMethods.cs" />
     <Compile Include="Http\HttpResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resenders\IRequestResender.cs" />
+    <Compile Include="Resenders\UnsupportedMediaTypeResender.cs" />
     <Compile Include="Serializers\Custom\CustomSerializer.cs" />
     <Compile Include="Serializers\Custom\Serializer.cs" />
-    <Compile Include="Serializers\Custom\SerializeSettings.cs" />
+    <Compile Include="Serializers\Custom\SerializerBulider.cs" />
     <Compile Include="Serializers\Contracts\IContentSerializer.cs" />
     <Compile Include="Serializers\Defaults\ContentSerializers.cs" />
     <Compile Include="Serializers\Defaults\DefaultJson.cs" />
@@ -62,18 +58,16 @@
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultTextPlainSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
+    <Compile Include="Integration\IHttpWebResponse.cs" />
+    <Compile Include="Integration\WebRequestBuilder.cs" />
+    <Compile Include="Integration\WebRequestSpecifications.cs" />
+    <Compile Include="Integration\WebRequestTools.cs" />
+    <Compile Include="Integration\WebRequestWorker.cs" />
     <Compile Include="Utils\AcceptHeaderMapper.cs" />
-    <Compile Include="Utils\CredentialMapper.cs" />
-    <Compile Include="Utils\UnauthorizedResender.cs" />
-    <Compile Include="Utils\UnsupportedMediaTypeResender.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
-    <Compile Include="Utils\IHttpWebResponse.cs" />
     <Compile Include="Utils\ResponseTransformer.cs" />
     <Compile Include="Utils\UrlBuilder.cs" />
-    <Compile Include="Utils\WebRequestSpecifications.cs" />
-    <Compile Include="Utils\WebRequestWorker.cs" />
-    <Compile Include="Utils\WebRequestBuilder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

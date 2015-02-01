@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Integration
 {
 	public interface IHttpWebResponse : IDisposable
 	{
