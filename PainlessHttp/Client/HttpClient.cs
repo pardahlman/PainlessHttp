@@ -14,7 +14,7 @@ namespace PainlessHttp.Client
 		private readonly UrlBuilder _urlBuilder;
 		private readonly WebRequestBuilder _reqBuilder;
 		private readonly ResponseTransformer _responseTransformer;
-		public HttpClient(string baseUrl) : this(new Configuration{BaseUrl = baseUrl})
+		public HttpClient(string baseUrl = "") : this(new Configuration{BaseUrl = baseUrl})
 		{
 			/* Don't duplicate code here.*/
 		}
