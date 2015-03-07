@@ -74,18 +74,20 @@ namespace PainlessHttp.Utils
 
 		public static async Task<string> ReadBodyAsync(IHttpWebResponse response)
 		{
-			var responseStream = response.GetResponseStream();
-			if (responseStream == null)
+			using (var responseStream = response.GetResponseStream())
 			{
-				throw new ArgumentNullException("response");
-			}
+				if (responseStream == null)
+				{
+					throw new ArgumentNullException("response");
+				}
 
-			string raw;
-			using (var reader = new StreamReader(responseStream))
-			{
-				raw = await reader.ReadToEndAsync();
+				string raw;
+				using (var reader = new StreamReader(responseStream))
+				{
+					raw = await reader.ReadToEndAsync();
+				}
+				return raw;
 			}
-			return raw;
 		}
 	}
 }
