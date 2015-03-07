@@ -25,6 +25,8 @@ Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PainlessHttp.Nuget", "Painl
 EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "Painless.Serializer.JsonNet.NuGet", "Painless.Serializer.JsonNet.NuGet\Painless.Serializer.JsonNet.NuGet.nuproj", "{E7411A4C-46A6-4270-B45E-D827518FE61C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PainlessHttp.Serializer.JsonNet.Tests", "PainlessHttp.Serializer.JsonNet.Tests\PainlessHttp.Serializer.JsonNet.Tests.csproj", "{681410D1-AA24-4706-B95C-EE03ACA9CDA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7411A4C-46A6-4270-B45E-D827518FE61C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{681410D1-AA24-4706-B95C-EE03ACA9CDA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{681410D1-AA24-4706-B95C-EE03ACA9CDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{681410D1-AA24-4706-B95C-EE03ACA9CDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{681410D1-AA24-4706-B95C-EE03ACA9CDA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{F8ECB652-C9E0-446B-9A64-B6D920081376} = {650C8860-9DDF-42CB-B219-D0DC34F46BF6}
 		{C7679876-B664-4F23-9671-12785DD1A523} = {7C03918C-5313-4840-97D5-D5867728281A}
 		{E7411A4C-46A6-4270-B45E-D827518FE61C} = {7C03918C-5313-4840-97D5-D5867728281A}
+		{681410D1-AA24-4706-B95C-EE03ACA9CDA6} = {650C8860-9DDF-42CB-B219-D0DC34F46BF6}
 	EndGlobalSection
 EndGlobal

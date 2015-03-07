@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{368F72B9-86DB-470B-BC76-2854E0CE7BF5}</ProjectGuid>
+    <ProjectGuid>{681410D1-AA24-4706-B95C-EE03ACA9CDA6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PainlessHttp.Serializer.JsonNet</RootNamespace>
-    <AssemblyName>PainlessHttp.Serializer.JsonNet</AssemblyName>
+    <RootNamespace>PainlessHttp.Serializer.JsonNet.Tests</RootNamespace>
+    <AssemblyName>PainlessHttp.Serializer.JsonNet.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,18 +34,34 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PainlessJsonNet.cs" />
-    <Compile Include="NewtonSoft.cs" />
-    <Compile Include="NewtonsoftSettings.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PainlessHttp.DevServer\PainlessHttp.DevServer.csproj">
+      <Project>{C7256164-4D19-40BE-9CA6-42C3CB8EB164}</Project>
+      <Name>PainlessHttp.DevServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PainlessHttp.Serializer.JsonNet\PainlessHttp.Serializer.JsonNet.csproj">
+      <Project>{368f72b9-86db-470b-bc76-2854e0ce7bf5}</Project>
+      <Name>PainlessHttp.Serializer.JsonNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PainlessHttp\PainlessHttp.csproj">
       <Project>{1719f085-34f2-48b6-ad2e-98b67856b3b0}</Project>
       <Name>PainlessHttp</Name>
