@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
+using PainlessHttp.Integration;
 
 namespace PainlessHttp.Client
 {
@@ -17,5 +18,11 @@ namespace PainlessHttp.Client
 
 		IHttpResponse<T> Delete<T>(string url, object data = null, object query = null, ContentType type = ContentType.Negotiated) where T : class;
 		Task<IHttpResponse<T>> DeleteAsync<T>(string url, object data = null, object query = null, ContentType type = ContentType.Negotiated) where T : class;
+
+		/// <summary>
+		/// Use this method if you want to get hold of the 'raw' HttpWebResponse. The response is wrapped in an interface, which makes it suitable for testing.
+		/// </summary>
+		IHttpWebResponse PerformRaw(HttpMethod method, string url, object data = null, object query = null, ContentType type = ContentType.Negotiated);
+		Task<IHttpWebResponse> PerformRawAsync(HttpMethod method, string url, object data = null, object query = null, ContentType type = ContentType.Negotiated);
 	}
 }	

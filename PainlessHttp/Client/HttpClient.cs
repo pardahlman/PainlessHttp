@@ -76,7 +76,26 @@ namespace PainlessHttp.Client
 			return response;
 		}
 
-		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Negotiated, object data = null) where T : class 
+		public IHttpWebResponse PerformRaw(HttpMethod method, string url, object data = null, object query = null, ContentType type = ContentType.Negotiated)
+		{
+			var response = GetRawResponseAsync(method, url, query, type, data).Result;
+			return response;
+		}
+
+		public Task<IHttpWebResponse> PerformRawAsync(HttpMethod method, string url, object data = null, object query = null,
+			ContentType type = ContentType.Negotiated)
+		{
+			var response = GetRawResponseAsync(method, url, query, type, data);
+			return response;
+		}
+
+		private async Task<IHttpResponse<T>> PerformRequestAsync<T>(HttpMethod method, string url, object query, ContentType type = ContentType.Negotiated, object data = null) where T : class
+		{
+			var response = await GetRawResponseAsync(method, url, query,type, data);
+			return await _responseTransformer.TransformAsync<T>(response);
+		}
+
+		private async Task<IHttpWebResponse> GetRawResponseAsync(HttpMethod method, string url, object query, ContentType type, object data)
 		{
 			var fullUrl = _urlBuilder.Build(url, query);
 
@@ -87,8 +106,7 @@ namespace PainlessHttp.Client
 				.Prepare();
 
 			var response = await request.PerformAsync();
-
-			return await _responseTransformer.TransformAsync<T>(response);
+			return response;
 		}
 	}
 }
