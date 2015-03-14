@@ -68,5 +68,21 @@ namespace PainlessHttp.Tests.Utils
 			/* Assert */
 			Assert.That(result, Is.EqualTo(expected));
 		}
+
+		[TestCase("http://www.github.com", "/pardahlman", "http://www.github.com/pardahlman")]
+		[TestCase("http://www.github.com/", "pardahlman", "http://www.github.com/pardahlman")]
+		[TestCase("http://www.github.com/", "/pardahlman", "http://www.github.com/pardahlman")]
+		[TestCase("http://www.github.com", "pardahlman", "http://www.github.com/pardahlman")]
+		public void Should_Not_Add_Double_Slash_Between_Base_And_Relative_Url(string baseUrl, string relativeUrl, string expectedUrl)
+		{
+			/* Setup */
+			var builder = new UrlBuilder(baseUrl);
+
+			/* Test */
+			var result = builder.Build(relativeUrl);
+
+			/* Assert */
+			Assert.That(result, Is.EqualTo(expectedUrl));
+		}
 	}
 }

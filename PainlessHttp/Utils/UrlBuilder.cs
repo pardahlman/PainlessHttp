@@ -18,8 +18,16 @@ namespace PainlessHttp.Utils
 		public string Build(string relativeUrl = null, object query = null)
 		{
 			var builder = new StringBuilder(_baseUrl);
-			if (relativeUrl != null)
+			if (!string.IsNullOrWhiteSpace(relativeUrl) && !string.IsNullOrWhiteSpace(_baseUrl))
 			{
+				if (_baseUrl.Last() == '/' && relativeUrl.First() == '/')
+				{
+					relativeUrl = relativeUrl.Substring(1);
+				}
+				if (_baseUrl.Last() != '/' && relativeUrl.First() != '/')
+				{
+					builder.Append('/');
+				}
 				builder.Append(relativeUrl);
 			}
 			if (query != null)
