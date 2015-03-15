@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using PainlessHttp.Http.Contracts;
 
 namespace PainlessHttp.Cache
@@ -10,9 +11,9 @@ namespace PainlessHttp.Cache
 			return null;
 		}
 
-		public void Add(HttpWebRequest rawRequest, IHttpWebResponse rawResponse)
+		public Task AddAsync(HttpWebRequest rawRequest, IHttpWebResponse rawResponse)
 		{
-			
+			return Task.FromResult(true);
 		}
 	}
 }

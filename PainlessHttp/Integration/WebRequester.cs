@@ -91,7 +91,7 @@ namespace PainlessHttp.Integration
 			}
 			else
 			{
-				_config.Advanced.ModifiedSinceCache.Add(rawRequest, rawResponse);
+				await _config.Advanced.ModifiedSinceCache.AddAsync(rawRequest, rawResponse);
 			}
 
 			ResetModifiers();
