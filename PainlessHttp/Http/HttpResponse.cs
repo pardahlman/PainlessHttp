@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using PainlessHttp.Http.Contracts;
 
 namespace PainlessHttp.Http
@@ -8,5 +9,6 @@ namespace PainlessHttp.Http
 		public HttpStatusCode StatusCode { get; set; }
 		public T Body { get; set; }
 		public string RawBody { get; set; }
+		public DateTime LastModified { get; set; }
 	}
 }

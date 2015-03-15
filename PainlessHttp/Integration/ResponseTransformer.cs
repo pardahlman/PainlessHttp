@@ -28,6 +28,7 @@ namespace PainlessHttp.Integration
 			var result = new HttpResponse<T>
 			{
 				StatusCode = raw.StatusCode,
+				LastModified = raw.LastModified,
 				RawBody = rawBody,
 				Body = Deserialize<T>(rawBody, raw)
 			};
