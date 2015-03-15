@@ -10,7 +10,7 @@ namespace PainlessHttp.Serializers.Defaults
 		{
 			new DefaultJsonSerializer(),
 			new DefaultXmlSerializer(),
-			new DefaultTextPlainSerializer()
+			new DefaultNoActionSerializer()
 		};
 	}
 }

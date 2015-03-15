@@ -56,7 +56,7 @@
     <Compile Include="Serializers\Defaults\DefaultJson.cs" />
     <Compile Include="Serializers\Defaults\DefaultXml.cs" />
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
-    <Compile Include="Serializers\Typed\DefaultTextPlainSerializer.cs" />
+    <Compile Include="Serializers\Typed\DefaultNoActionSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
     <Compile Include="Integration\IHttpWebResponse.cs" />
     <Compile Include="Integration\WebRequestBuilder.cs" />

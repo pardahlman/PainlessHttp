@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
 namespace PainlessHttp.Serializers.Typed
 {
-	public class DefaultTextPlainSerializer : IContentSerializer
+	public class DefaultNoActionSerializer : IContentSerializer
 	{
 		public IEnumerable<ContentType> ContentType
 		{
-			get { return new[] {Http.ContentType.TextPlain}; }
+			get { return new[] {Http.ContentType.TextPlain, Http.ContentType.TextCsv, Http.ContentType.TextHtml}; }
 		}
 
 		public string Serialize(object data)
@@ -19,12 +18,6 @@ namespace PainlessHttp.Serializers.Typed
 
 		public T Deserialize<T>(string data)
 		{
-			if (typeof (T) == typeof (string))
-			{
-				var result = (T) Convert.ChangeType(data, typeof (T));
-				return result;
-			}
-
 			return default(T);
 		}
 	}
