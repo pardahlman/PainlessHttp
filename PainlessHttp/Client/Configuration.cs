@@ -30,12 +30,20 @@ namespace PainlessHttp.Client
 			/// </summary>
 			public ContentType ContentType { get; set; }
 
+			/// <summary>
+			/// Specify if Content Negotiation should be performed. If set to true, a request with a body will be resent
+			/// if the server does not support the currently content type.
+			/// </summary>
+			public bool ContentNegotiation { get; set; }
+
 			public Action<WebRequest> WebrequestModifier { get; set; }
 			public NetworkCredential Credentials { get; set; }
 
 			public AdvancedConfiguration()
 			{
 				Serializers = new List<IContentSerializer>();
+				ContentNegotiation = true;
+				WebrequestModifier = (req) => { };
 			}
 		}
 	}

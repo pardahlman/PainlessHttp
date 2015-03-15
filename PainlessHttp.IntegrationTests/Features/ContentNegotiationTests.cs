@@ -14,19 +14,6 @@ namespace PainlessHttp.IntegrationTests.Features
 	[TestFixture]
 	public class ContentNegotiationTests
 	{
-		private HttpClient _client;
-
-		[SetUp]
-		public void Setup()
-		{
-			var config = new Configuration
-			{
-				BaseUrl = WebApiSetupFixture.BaseAddress
-			};
-
-			_client = new HttpClient(config);
-		}
-
 		[TestCase(ContentType.ApplicationJson, "json", HttpStatusCode.OK)]
 		[TestCase(ContentType.ApplicationJson, "xml", HttpStatusCode.UnsupportedMediaType)]
 		[TestCase(ContentType.ApplicationXml, "xml", HttpStatusCode.OK)]
@@ -34,10 +21,19 @@ namespace PainlessHttp.IntegrationTests.Features
 		public async void Should_Not_Automatically_Negotiate_Content_If_Content_Type_Is_Defined(ContentType clientSends, string endpointAccepts, HttpStatusCode expectedStatusCode)
 		{
 			/* Setup */
+			var config = new Configuration
+			{
+				BaseUrl = WebApiSetupFixture.BaseAddress,
+				Advanced =
+				{
+					ContentNegotiation = false
+				}
+			};
+			var client = new HttpClient(config);
 			var newTodo = new Todo { Description = "Write tests" };
 
 			/* Test */
-			var created = await _client.PostAsync<string>("/api/content-type", newTodo, new { accept = endpointAccepts }, clientSends);
+			var created = await client.PostAsync<string>("/api/content-type", newTodo, new { accept = endpointAccepts }, clientSends);
 
 			/* Assert */
 			Assert.That(created.StatusCode, Is.EqualTo(expectedStatusCode));
@@ -45,21 +41,14 @@ namespace PainlessHttp.IntegrationTests.Features
 
 		[TestCase(ContentType.ApplicationJson, "xml")]
 		[TestCase(ContentType.ApplicationXml, "json")]
-		public async void Should_Negotiate_Content_If_No_Content_Type_Is_Defined(ContentType clientSends, string endpointAccepts)
+		public async void Should_Negotiate_Content_As_Default_Behaviour(ContentType clientSends, string endpointAccepts)
 		{
 			/* Setup */
-			_client = new HttpClient(new Configuration
-			{
-				BaseUrl = WebApiSetupFixture.BaseAddress,
-				Advanced =
-				{
-					ContentType = clientSends
-				}
-			});
+			var client = new HttpClient(WebApiSetupFixture.BaseAddress);
 			var newTodo = new Todo { Description = "Write tests" };
 
 			/* Test */
-			var created = await _client.PostAsync<string>("/api/content-type", newTodo, new { accept = endpointAccepts });
+			var created = await client.PostAsync<string>("/api/content-type", newTodo, new { accept = endpointAccepts }, clientSends);
 
 			Assert.That(created.StatusCode, Is.EqualTo(HttpStatusCode.OK));
 		}
