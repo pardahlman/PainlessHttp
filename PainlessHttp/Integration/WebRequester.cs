@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,8 +7,6 @@ using System.Threading.Tasks;
 using PainlessHttp.Client;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
-using PainlessHttp.Serializers.Contracts;
-using PainlessHttp.Serializers.Defaults;
 using PainlessHttp.Utils;
 using HttpWebResponse = PainlessHttp.Http.HttpWebResponse;
 
@@ -19,7 +16,6 @@ namespace PainlessHttp.Integration
 	{
 		private readonly Configuration _config;
 		private readonly UrlBuilder _urlBuilder;
-		private readonly List<IContentSerializer> _serializers;
 		private readonly string _accept = String.Join(",", ContentTypes.ApplicationJson, ContentTypes.ApplicationXml);
 
 		private Func<HttpWebRequest> _requestInit;
@@ -31,8 +27,7 @@ namespace PainlessHttp.Integration
 		public WebRequester(Configuration config)
 		{
 			_config = config;
-			_serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
-			_contentNegotiator = new ContentNegotiator(_serializers.SelectMany(s => s.ContentType));
+			_contentNegotiator = new ContentNegotiator(config.Advanced.Serializers.SelectMany(s => s.ContentType));
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			ResetModifiers();
 		}
@@ -53,14 +48,13 @@ namespace PainlessHttp.Integration
 		public WebRequester WithPayload(object data, ContentType type)
 		{
 			_contentTypeProvider = () => type;
-
 			_payloadModifilerAsync = async req =>
 			{
 				if (data == null)
 				{
 					return;
 				}
-				var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(_contentTypeProvider()));
+				var serializer = _config.Advanced.Serializers.FirstOrDefault(s => s.ContentType.Contains(_contentTypeProvider()));
 				if (serializer == null)
 				{
 					throw new Exception(string.Format("No Serializer registered for {0}", type));
@@ -74,7 +68,6 @@ namespace PainlessHttp.Integration
 					await stream.WriteAsync(payloadAsBytes, 0, payloadAsBytes.Length);
 				}
 			};
-
 			return this;
 		}
 

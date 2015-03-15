@@ -21,10 +21,10 @@ namespace PainlessHttp.Client
 		
 		public HttpClient(Configuration config)
 		{
-			var serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
+			config.Advanced.Serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
  
 			_webRequester = new WebRequester(config);
-			_responseTransformer = new ResponseTransformer(serializers);
+			_responseTransformer = new ResponseTransformer(config.Advanced.Serializers);
 		}
 
 		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 
