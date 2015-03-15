@@ -107,5 +107,22 @@ namespace PainlessHttp.Tests.Serializers.Typed
 			Assert.That(result.ListProp[0], Is.EqualTo(expected.ListProp[0]));
 			Assert.That(result.ListProp[1], Is.EqualTo(expected.ListProp[1]));
 		}
+
+		[Test]
+		public void Should_Be_Able_To_Deserialize_Universal_Sortable_DateTime_Properties()
+		{
+			/* Setup */
+			var originalObject = new SerializerDateTimeClass
+			{
+				Time = DateTime.Today
+			};
+			var serialized = JsonConvert.SerializeObject(originalObject);
+			
+			/* Test */
+			var deserialized = _serializer.Deserialize<SerializerDateTimeClass>(serialized);
+
+			/* Assert */
+			Assert.That(deserialized.Time, Is.EqualTo(originalObject.Time));
+		}
 	}
 }

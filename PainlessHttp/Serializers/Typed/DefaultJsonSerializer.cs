@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using PainlessHttp.Http;
@@ -49,7 +51,7 @@ namespace PainlessHttp.Serializers.Typed
 			DataContractJsonSerializer serializer;
 			if (!cachedSerializers.TryGetValue(type, out serializer))
 			{
-				serializer = new DataContractJsonSerializer(type);
+				serializer = new DataContractJsonSerializer(type, new DataContractJsonSerializerSettings{ DateTimeFormat = new DateTimeFormat("yyyy-MM-ddThh:mm:sszzz")});
 				cachedSerializers.Add(type, serializer);
 			}
 			return serializer;
@@ -65,7 +67,7 @@ namespace PainlessHttp.Serializers.Typed
 			var serializer = GetSerializer(typeof (T));
 
 			T result;
-			using (var stream = new MemoryStream(Encoding.UTF8.GetBytes(data)))
+			using (var stream	= new MemoryStream(Encoding.UTF8.GetBytes(data)))
 			{
 				result = (T) serializer.ReadObject(stream);
 			}

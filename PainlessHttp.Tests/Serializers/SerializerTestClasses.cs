@@ -12,6 +12,11 @@ namespace PainlessHttp.Tests.Serializers
 		public string StringProp { get; set; }
 	}
 
+	public class SerializerDateTimeClass
+	{
+		public DateTime Time { get; set; }
+	}
+
 	public class AdvancedTestClass
 	{
 		public int IntProp { get; set; }
