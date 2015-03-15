@@ -18,7 +18,8 @@ namespace PainlessHttp.Serializer.JsonNet.Tests
 			{
 				Description = "Write a new JsonNet serialzer",
 				Id = 1,
-				IsCompleted = true
+				IsCompleted = true,
+				UpdateDate = new DateTime(2015,03,15)
 			};
 
 			_payloadAsString = JsonConvert.SerializeObject(_payload);
@@ -34,7 +35,7 @@ namespace PainlessHttp.Serializer.JsonNet.Tests
 			var result = serializer.Serialize(_payload);
 
 			/* Assert */
-			Assert.That(result, Contains.Substring("{\"Id\":1,\"Description\":\"Write a new JsonNet serialzer\",\"IsCompleted\":true}"));
+			Assert.That(result, Contains.Substring("{\"Id\":1,\"Description\":\"Write a new JsonNet serialzer\",\"IsCompleted\":true,\"UpdateDate\":\"2015-03-15T00:00:00\"}"));
 		}
 
 		[Test]
