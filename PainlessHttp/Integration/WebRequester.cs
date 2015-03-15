@@ -28,6 +28,7 @@ namespace PainlessHttp.Integration
 		{
 			_config = config;
 			_contentNegotiator = new ContentNegotiator(config.Advanced.Serializers.SelectMany(s => s.ContentType));
+			//_modifiedSinceUtils = new ModifiedSinceUtil(_config.Advanced.ModifiedSinceCache);
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			ResetModifiers();
 		}
@@ -83,6 +84,16 @@ namespace PainlessHttp.Integration
 				rawResponse = await GetResponseAsync(rawRequest);
 			}
 
+			if (rawResponse.StatusCode == HttpStatusCode.NotModified)
+			{
+				var cached = _config.Advanced.ModifiedSinceCache.Get(rawRequest);
+				rawResponse.SetResponseStream(cached.ResponseStream);
+			}
+			else
+			{
+				_config.Advanced.ModifiedSinceCache.Add(rawRequest, rawResponse);
+			}
+
 			ResetModifiers();
 			return rawResponse;
 		}
@@ -117,6 +128,13 @@ namespace PainlessHttp.Integration
 			req.UserAgent = ClientUtils.GetUserAgent();
 			_methodModifier(req);
 			await _payloadModifilerAsync(req);
+
+			var cached = _config.Advanced.ModifiedSinceCache.Get(req);
+			if (cached != null)
+			{
+				req.IfModifiedSince = cached.ModifiedDate;
+			}
+
 			return req;
 		}
 

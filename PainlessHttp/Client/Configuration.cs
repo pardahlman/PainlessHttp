@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using PainlessHttp.Cache;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
@@ -15,7 +16,6 @@ namespace PainlessHttp.Client
 		{
 			Advanced = new AdvancedConfiguration();
 		}
-		
 
 		public class AdvancedConfiguration
 		{
@@ -30,12 +30,15 @@ namespace PainlessHttp.Client
 			/// </summary>
 			public bool ContentNegotiation { get; set; }
 
+			public IModifiedSinceCache ModifiedSinceCache { get; set; }
+
 			public Action<WebRequest> WebrequestModifier { get; set; }
 			public NetworkCredential Credentials { get; set; }
 
 			public AdvancedConfiguration()
 			{
 				Serializers = new List<IContentSerializer>();
+				ModifiedSinceCache = new NoCache();
 				ContentNegotiation = true;
 				WebrequestModifier = (req) => { };
 			}

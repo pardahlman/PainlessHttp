@@ -9,6 +9,7 @@ namespace PainlessHttp.Http
 	public class HttpWebResponse : IHttpWebResponse
 	{
 		private readonly System.Net.HttpWebResponse _raw;
+		private Stream _responseStream;
 
 		public string CharacterSet { get; set; }
 		public string ContentEncoding { get; set; }
@@ -49,6 +50,11 @@ namespace PainlessHttp.Http
 				property.SetValue(this, corresponding.GetValue(_raw));
 			}
 		}
+
+		public void SetResponseStream(Stream responseStream)
+		{
+			_responseStream = responseStream;
+		}
 		
 		public void Close()
 		{
@@ -67,12 +73,18 @@ namespace PainlessHttp.Http
 
 		public Stream GetResponseStream()
 		{
+			if (_responseStream != null)
+			{
+				return _responseStream;
+			}
 			if (_raw == null)
 			{
 				throw new NotImplementedException("Can not call method without existing underlying HttpWebResponse");
 			}
 			return _raw.GetResponseStream();
 		}
+
+		
 
 		public void Dispose()
 		{

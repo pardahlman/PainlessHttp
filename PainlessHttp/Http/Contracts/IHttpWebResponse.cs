@@ -24,5 +24,6 @@ namespace PainlessHttp.Http.Contracts
 		void Close();
 		string GetResponseHeader(string headerName);
 		Stream GetResponseStream();
+		void SetResponseStream(Stream responseStream);
 	}
 }

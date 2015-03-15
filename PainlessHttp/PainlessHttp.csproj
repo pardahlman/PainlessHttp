@@ -37,6 +37,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CachedObject.cs" />
+    <Compile Include="Cache\IModifiedSinceCache.cs" />
+    <Compile Include="Cache\NoCache.cs" />
     <Compile Include="Client\HttpClient.cs" />
     <Compile Include="Client\Configuration.cs" />
     <Compile Include="Client\IHttpClient.cs" />
