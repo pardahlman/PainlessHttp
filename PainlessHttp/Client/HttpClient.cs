@@ -29,7 +29,7 @@ namespace PainlessHttp.Client
  
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			_reqBuilder = new WebRequestBuilder(serializers, defaultContentType, config.Advanced.WebrequestModifier, config.Advanced.Credentials);
-			_responseTransformer = new ResponseTransformer(serializers, defaultContentType);
+			_responseTransformer = new ResponseTransformer(serializers);
 		}
 
 		public IHttpResponse<T> Get<T>(string url, object query = null) where T : class 

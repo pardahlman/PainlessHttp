@@ -16,12 +16,10 @@ namespace PainlessHttp.Utils
 	public class ResponseTransformer
 	{
 		private readonly IEnumerable<IContentSerializer> _serializers;
-		private readonly ContentType _defaultContentType;
 
-		public ResponseTransformer(IEnumerable<IContentSerializer> serializers, ContentType defaultContentType)
+		public ResponseTransformer(IEnumerable<IContentSerializer> serializers)
 		{
 			_serializers = serializers;
-			_defaultContentType = defaultContentType;
 		}
 
 		public async Task<IHttpResponse<T>> TransformAsync<T>(IHttpWebResponse raw) where T : class
@@ -57,15 +55,16 @@ namespace PainlessHttp.Utils
 
 		private ContentType ExtractContentTypeFromHeaders(WebHeaderCollection headers)
 		{
+			const ContentType fallback = ContentType.ApplicationJson;
 			if (headers == null)
 			{
-				return _defaultContentType;
+				return fallback;
 			}
 
 			var contentTypeHeader = headers[HttpResponseHeader.ContentType];
 			if (contentTypeHeader == null)
 			{
-				return _defaultContentType;
+				return fallback;
 			}
 
 			var contentType = HttpConverter.ContentType(contentTypeHeader);

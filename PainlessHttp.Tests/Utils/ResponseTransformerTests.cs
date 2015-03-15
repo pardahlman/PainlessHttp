@@ -22,7 +22,7 @@ namespace PainlessHttp.Tests.Utils
 		public void Setup()
 		{
 			_serializers = new List<IContentSerializer>();
-			_transformer = new ResponseTransformer(_serializers, ContentType.ApplicationJson);
+			_transformer = new ResponseTransformer(_serializers);
 
 			_rawResponse = new Mock<IHttpWebResponse>();
 			_rawResponse
