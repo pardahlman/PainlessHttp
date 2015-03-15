@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PainlessHttp.DevServer.Model;
 
@@ -16,10 +17,10 @@ namespace PainlessHttp.DevServer.Data
 		{
 			_todos = new List<Todo>
 					{
-						new Todo { Id = 1, IsCompleted = true, Description = "Start writing awsome todo app"},
-						new Todo { Id = 2, IsCompleted = false, Description = "Invent awsome idea that makes you a millionare"},
-						new Todo { Id = 3, IsCompleted = true, Description = "Find out why Redbull sponsors sports event."},
-						new Todo { Id = 4, IsCompleted = true, Description = "Make a list of awsome books."},
+						new Todo { Id = 1, IsCompleted = true, Description = "Start writing awsome todo app", UpdateDate = DateTime.Now.AddDays(-1)},
+						new Todo { Id = 2, IsCompleted = false, Description = "Invent awsome idea that makes you a millionare", UpdateDate = DateTime.Now.AddDays(-1)},
+						new Todo { Id = 3, IsCompleted = true, Description = "Find out why Redbull sponsors sports event.", UpdateDate = DateTime.Now.AddDays(-1)},
+						new Todo { Id = 4, IsCompleted = true, Description = "Make a list of awsome books.", UpdateDate = DateTime.Now.AddDays(-1)},
 					};
 		}
 		#endregion

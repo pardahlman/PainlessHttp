@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.Owin;
 using PainlessHttp.DevServer.Data;
 using PainlessHttp.DevServer.Model;
 
@@ -38,7 +40,15 @@ namespace PainlessHttp.DevServer.Controllers
 			{
 				return Request.CreateResponse(HttpStatusCode.NotFound);
 			}
-			return Request.CreateResponse(HttpStatusCode.OK, found);
+
+			if (Request.Headers.IfModifiedSince.HasValue && Request.Headers.IfModifiedSince.Value <= found.UpdateDate)
+			{
+				return Request.CreateResponse(HttpStatusCode.NotModified);
+			}
+
+			var response = Request.CreateResponse(HttpStatusCode.OK, found);
+			response.Content.Headers.LastModified = new DateTimeOffset(found.UpdateDate);
+			return response;
 		}
 
 		[Route("api/todos")]
