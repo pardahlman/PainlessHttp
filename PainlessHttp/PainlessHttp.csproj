@@ -39,7 +39,6 @@
     <Compile Include="Client\HttpClient.cs" />
     <Compile Include="Client\Configuration.cs" />
     <Compile Include="Client\IHttpClient.cs" />
-    <Compile Include="Http\AuthenticationType.cs" />
     <Compile Include="Http\ContentType.cs" />
     <Compile Include="Http\AcceptHeaderField.cs" />
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
