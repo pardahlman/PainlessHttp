@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Painless.Serializer.JsonNet</Id>
-    <Version>0.8.0</Version>
+    <Version>0.10.1</Version>
     <Title>PainlessHttp: Json.Net Serializer</Title>
     <Authors>par.dahlman</Authors>
     <Owners>par.dahlman</Owners>
@@ -35,6 +35,7 @@
     <IconUrl>http://painless.pardahlman.se/icon.png</IconUrl>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PainlessHttp.Nuget\PainlessHttp.Nuget.nuproj" />
     <ProjectReference Include="..\PainlessHttp.Serializer.JsonNet\PainlessHttp.Serializer.JsonNet.csproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
