@@ -16,7 +16,7 @@ namespace PainlessHttp.Serializers.Typed
 		private static IDictionary<Type, DataContractJsonSerializer> cachedSerializers;
 		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
 
-		private readonly Regex _dateTime = new Regex(@"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{7})?[-\+]\d{2}:\d{2}", RegexOptions.Compiled);
+		private readonly Regex _dateTime = new Regex(@"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{0,7})?[-\+]\d{2}:\d{2}", RegexOptions.Compiled);
 		private readonly DateTimeFormat _dateTimeFormater = new DateTimeFormat("yyyy-MM-ddTHH:mm:ss");
 		private const string _localTimePattern = "yyyy-MM-ddTHH:mm:ss.FFFFFFFzzz";
 
