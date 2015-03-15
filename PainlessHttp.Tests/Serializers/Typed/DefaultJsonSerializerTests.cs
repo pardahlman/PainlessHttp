@@ -108,21 +108,19 @@ namespace PainlessHttp.Tests.Serializers.Typed
 			Assert.That(result.ListProp[1], Is.EqualTo(expected.ListProp[1]));
 		}
 
-		[Test]
-		public void Should_Be_Able_To_Deserialize_Universal_Sortable_DateTime_Properties()
+		[TestCase("2015-03-15T12:00:00+01:00")]
+		[TestCase("2015-03-15T10:00:00-01:00")]
+		[TestCase("2015-03-15T12:00:00")]
+		public void Should_Be_Able_To_Deserialize_Universal_Sortable_DateTime_Properties(string dateTimeString)
 		{
 			/* Setup */
-			var originalObject = new SerializerDateTimeClass
-			{
-				Time = DateTime.Today
-			};
-			var serialized = JsonConvert.SerializeObject(originalObject);
+			var expected = new DateTime(2015, 03, 15, 12, 0, 0);
 			
 			/* Test */
-			var deserialized = _serializer.Deserialize<SerializerDateTimeClass>(serialized);
+			var deserialized = _serializer.Deserialize<DateTime>(dateTimeString);
 
 			/* Assert */
-			Assert.That(deserialized.Time, Is.EqualTo(originalObject.Time));
+			Assert.That(deserialized, Is.EqualTo(expected));
 		}
 	}
 }

@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Text.RegularExpressions;
 using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
@@ -14,6 +15,10 @@ namespace PainlessHttp.Serializers.Typed
 	{
 		private static IDictionary<Type, DataContractJsonSerializer> cachedSerializers;
 		private readonly IEnumerable<ContentType> _supportedTypes = new List<ContentType> { Http.ContentType.ApplicationJson };
+		
+		private readonly Regex _dateTime = new Regex(@"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[-\+]\d{2}:\d{2}", RegexOptions.Compiled);
+		private readonly DateTimeFormat _dateTimeFormater = new DateTimeFormat("yyyy-MM-ddTHH:mm:ss");
+		private const string _localTimePattern = "yyyy-MM-ddTHH:mm:sszzz";
 
 		public DefaultJsonSerializer() : this(new Dictionary<Type, DataContractJsonSerializer>())
 		{ /* Do not dublicate code here */}
@@ -46,12 +51,12 @@ namespace PainlessHttp.Serializers.Typed
 			return result;
 		}
 
-		private static DataContractJsonSerializer GetSerializer(Type type)
+		private DataContractJsonSerializer GetSerializer(Type type)
 		{
 			DataContractJsonSerializer serializer;
 			if (!cachedSerializers.TryGetValue(type, out serializer))
 			{
-				serializer = new DataContractJsonSerializer(type, new DataContractJsonSerializerSettings{ DateTimeFormat = new DateTimeFormat("yyyy-MM-ddThh:mm:sszzz")});
+				serializer = new DataContractJsonSerializer(type, new DataContractJsonSerializerSettings { DateTimeFormat = _dateTimeFormater });
 				cachedSerializers.Add(type, serializer);
 			}
 			return serializer;
@@ -64,6 +69,12 @@ namespace PainlessHttp.Serializers.Typed
 				return default(T);
 			}
 
+			foreach (Match match in _dateTime.Matches(data))
+			{
+				var parsed = DateTime.ParseExact(match.Value, _localTimePattern, DateTimeFormatInfo.CurrentInfo);
+				data = data.Replace(match.Value, parsed.ToString(_dateTimeFormater.FormatString));
+			}
+			
 			var serializer = GetSerializer(typeof (T));
 
 			T result;
