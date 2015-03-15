@@ -7,9 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using PainlessHttp.Client;
 using PainlessHttp.Http;
+using PainlessHttp.Http.Contracts;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Defaults;
 using PainlessHttp.Utils;
+using HttpWebResponse = PainlessHttp.Http.HttpWebResponse;
 
 namespace PainlessHttp.Integration
 {

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using PainlessHttp.Http;
+using PainlessHttp.Http.Contracts;
 using PainlessHttp.Integration;
 
 namespace PainlessHttp.Utils

@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
-using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Contracts;
+using PainlessHttp.Utils;
 
-namespace PainlessHttp.Utils
+namespace PainlessHttp.Integration
 {
 	public class ResponseTransformer
 	{

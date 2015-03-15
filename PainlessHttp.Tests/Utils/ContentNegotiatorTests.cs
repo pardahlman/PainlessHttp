@@ -3,7 +3,7 @@ using System.Net;
 using NUnit.Framework;
 using PainlessHttp.Http;
 using PainlessHttp.Utils;
-using HttpWebResponse = PainlessHttp.Integration.HttpWebResponse;
+using HttpWebResponse = PainlessHttp.Http.HttpWebResponse;
 
 namespace PainlessHttp.Tests.Utils
 {

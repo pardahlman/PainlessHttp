@@ -5,6 +5,7 @@ using System.Net;
 using Moq;
 using NUnit.Framework;
 using PainlessHttp.Http;
+using PainlessHttp.Http.Contracts;
 using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Contracts;
 using PainlessHttp.Serializers.Defaults;

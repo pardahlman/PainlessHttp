@@ -2,31 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Net;
+using PainlessHttp.Http.Contracts;
 
-namespace PainlessHttp.Integration
+namespace PainlessHttp.Http
 {
-	public interface IHttpWebResponse : IDisposable
-	{
-		string CharacterSet { get; }
-		string ContentEncoding { get; }
-		long ContentLength { get; }
-		string ContentType { get; }
-		CookieCollection Cookies { get; set; }
-		WebHeaderCollection Headers { get; }
-		bool IsMutuallyAuthenticated { get; }
-		DateTime LastModified { get; }
-		string Method { get; }
-		Version ProtocolVersion { get; }
-		Uri ResponseUri { get; }
-		string Server { get; }
-		HttpStatusCode StatusCode { get; }
-		string StatusDescription { get; }
-		bool SupportsHeaders { get; }
-		void Close();
-		string GetResponseHeader(string headerName);
-		Stream GetResponseStream();
-	}
-
 	public class HttpWebResponse : IHttpWebResponse
 	{
 		private readonly System.Net.HttpWebResponse _raw;

@@ -45,6 +45,9 @@
     <Compile Include="Http\Contracts\IHttpResponse.cs" />
     <Compile Include="Http\HttpMethod.cs" />
     <Compile Include="Http\HttpResponse.cs" />
+    <Compile Include="Http\HttpWebResponse.cs" />
+    <Compile Include="Http\Contracts\IHttpWebResponse.cs" />
+    <Compile Include="Integration\ResponseTransformer.cs" />
     <Compile Include="Integration\WebRequester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializers\Custom\CustomSerializer.cs" />
@@ -57,12 +60,10 @@
     <Compile Include="Serializers\Typed\DefaultJsonSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultNoActionSerializer.cs" />
     <Compile Include="Serializers\Typed\DefaultXmlSerializer.cs" />
-    <Compile Include="Integration\IHttpWebResponse.cs" />
     <Compile Include="Utils\AcceptHeaderMapper.cs" />
     <Compile Include="Utils\ClientUtils.cs" />
     <Compile Include="Utils\HttpConverter.cs" />
     <Compile Include="Utils\ContentNegotiator.cs" />
-    <Compile Include="Utils\ResponseTransformer.cs" />
     <Compile Include="Utils\UrlBuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
