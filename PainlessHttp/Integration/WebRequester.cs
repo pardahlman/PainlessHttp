@@ -28,7 +28,6 @@ namespace PainlessHttp.Integration
 		{
 			_config = config;
 			_contentNegotiator = new ContentNegotiator(config.Advanced.Serializers.SelectMany(s => s.ContentType));
-			//_modifiedSinceUtils = new ModifiedSinceUtil(_config.Advanced.ModifiedSinceCache);
 			_urlBuilder = new UrlBuilder(config.BaseUrl);
 			ResetModifiers();
 		}
