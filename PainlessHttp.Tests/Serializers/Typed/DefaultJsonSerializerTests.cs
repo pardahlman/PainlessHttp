@@ -111,6 +111,7 @@ namespace PainlessHttp.Tests.Serializers.Typed
 		[TestCase("2015-03-15T12:00:00+01:00")]
 		[TestCase("2015-03-15T10:00:00-01:00")]
 		[TestCase("2015-03-15T12:00:00")]
+		[TestCase("2015-03-15T12:00:00.7206435+01:00")]
 		public void Should_Be_Able_To_Deserialize_Universal_Sortable_DateTime_Properties(string dateTimeString)
 		{
 			/* Setup */
