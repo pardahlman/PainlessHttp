@@ -6,7 +6,7 @@ using PainlessHttp.DevServer.Model;
 namespace PainlessHttp.Serializer.JsonNet.Tests
 {
 	[TestFixture]
-	public class Class1
+	public class PainlessJsonNetTests
 	{
 		private string _payloadAsString;
 		private Todo _payload;
