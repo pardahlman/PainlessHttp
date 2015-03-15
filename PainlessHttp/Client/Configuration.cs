@@ -25,12 +25,6 @@ namespace PainlessHttp.Client
 			public IList<IContentSerializer> Serializers { get; set; }
 
 			/// <summary>
-			/// Specify the default content type that the client will use if no
-			/// content negotiation has been made.
-			/// </summary>
-			public ContentType ContentType { get; set; }
-
-			/// <summary>
 			/// Specify if Content Negotiation should be performed. If set to true, a request with a body will be resent
 			/// if the server does not support the currently content type.
 			/// </summary>
