@@ -1,16 +1,16 @@
-﻿using System.CodeDom;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
 using PainlessHttp.Integration;
 using PainlessHttp.Serializers.Defaults;
-using PainlessHttp.Utils;
 
 namespace PainlessHttp.Client
 {
 	public class HttpClient : IHttpClient
 	{
+		public string BaseUrl { get; private set; }
+
 		private readonly ResponseTransformer _responseTransformer;
 		private readonly WebRequester _webRequester;
 
@@ -21,6 +21,7 @@ namespace PainlessHttp.Client
 		
 		public HttpClient(Configuration config)
 		{
+			BaseUrl = config.BaseUrl;
 			config.Advanced.Serializers = config.Advanced.Serializers.Concat(ContentSerializers.Defaults).ToList();
  
 			_webRequester = new WebRequester(config);
