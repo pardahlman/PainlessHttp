@@ -36,6 +36,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CacheBase.cs" />
     <Compile Include="Cache\CachedObject.cs" />
     <Compile Include="Cache\IModifiedSinceCache.cs" />
     <Compile Include="Cache\InMemoryCache.cs" />
