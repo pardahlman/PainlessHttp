@@ -10,26 +10,24 @@ namespace PainlessHttp.IntegrationTests.Features
 	public class ModifiedSinceTests
 	{
 		private HttpClient _client;
+		private Configuration _config;
 
 		[SetUp]
 		public void Setup()
 		{
-			var config = new Configuration
+			_config = new Configuration
 			{
 				BaseUrl = WebApiSetupFixture.BaseAddress,
-				Advanced =
-				{
-					ModifiedSinceCache = new InMemoryCache()
-				}
 			};
 
-			_client = new HttpClient(config);
+			_client = new HttpClient(_config);
 		}
 
 		[Test]
-		public async void Should_Use_Content_Cache()
+		public async void Should_Use_In_Memory_Content_Cache()
 		{
 			/* Setup */
+			_config.Advanced.ModifiedSinceCache = new InMemoryCache();
 			var firstResponse = await _client.GetAsync<Todo>("api/todos/1");
 
 			/* Test */
