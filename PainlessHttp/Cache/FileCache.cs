@@ -19,6 +19,8 @@ namespace PainlessHttp.Cache
 		public FileCache(string cacheDirectory = null)
 		{
 			CacheDirectory = cacheDirectory ?? GetPathToCacheDirectory();
+			if (!Directory.Exists(CacheDirectory))
+				throw new DirectoryNotFoundException(string.Format("Cache directory '{0}' does not exist", CacheDirectory));
 		}
 		
 		public override CachedObject Get(HttpWebRequest req)
