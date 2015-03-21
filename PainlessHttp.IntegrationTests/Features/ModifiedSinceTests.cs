@@ -38,5 +38,23 @@ namespace PainlessHttp.IntegrationTests.Features
 			Assert.That(secondResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotModified));
 			Assert.That(firstResponse.Body.Id, Is.EqualTo(secondResponse.Body.Id));
 		}
+
+		[Test]
+		public async void Should_Use_File_Cache()
+		{
+			/* Setup */
+			var fileCache = new FileCache();
+			_config.Advanced.ModifiedSinceCache = fileCache;
+			fileCache.Clear();
+			var firstResponse = await _client.GetAsync<Todo>("api/todos/1");
+
+			/* Test */
+			var secondResponse = await _client.GetAsync<Todo>("api/todos/1");
+
+			/* Assert */
+			Assert.That(firstResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+			Assert.That(secondResponse.StatusCode, Is.EqualTo(HttpStatusCode.NotModified));
+			Assert.That(firstResponse.Body.Id, Is.EqualTo(secondResponse.Body.Id));
+		}
 	}
 }
