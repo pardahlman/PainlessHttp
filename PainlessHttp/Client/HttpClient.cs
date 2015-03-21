@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
@@ -7,6 +8,7 @@ using PainlessHttp.Serializers.Defaults;
 
 namespace PainlessHttp.Client
 {
+	[DebuggerDisplay("PainlessHttp, BaseUrl: {BaseUrl}")]
 	public class HttpClient : IHttpClient
 	{
 		public string BaseUrl { get; private set; }
