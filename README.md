@@ -2,30 +2,21 @@
 
 _No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!_
 
-* async ``GET``, ``POST``, ``PUT`` and ``DELETE``
-* Content Negotiation
+* async/sync ``GET``, ``POST``, ``PUT`` and ``DELETE``
+* Content negotiation, so that you don't have to mind about ContentTypes, AcceptHeaders and all that stuff
+* Plugable ``If-Modified-Since`` caches for speeding up your application even more.
 * Authentication
-* Plugable serializers
+* Plugable serializers, use the built in onces, plugin your favorite onces (like ``PainlessHttp.Serializers.JsonNet``) or build one yourself
 * No external references to NuGets (_just Microsoft Core Libs!_)
 
 Getting typed metadata async has never been easier
 
 ```csharp
 	var client = new HttpClient("http://localhost:1337/");
-	var response = client.GetAsync<Todo>("api/todos/2").Result;
+	var response = await client.GetAsync<Todo>("api/todos/2");
 	Todo todo = response.Body;
 	Console.WriteLine("Mission of the day: {0}", todo.Description);
 ```
-
-Don't feel like specifying the type of there response body? No problem, just pass ``string`` as generic parameter and you get the raw response.
-
-```csharp
-	var client = new HttpClient("http://localhost:1337/");
-	var response = client.GetAsync<string>("api/todos/1").Result;
-	string rawResponse = response.Body;
-	Console.WriteLine("The server replied with: {0}", rawResponse);
-```
-
 Store new data with ``POST``
 
 ```csharp
@@ -59,18 +50,6 @@ Store new data with ``POST``
 	}
 ```
 
-There is nothing in the [Hypertext Transfer Protocol HTTP/1.1 spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html) that forbids the request to have a body. In fact, some [well-known APIs](https://developer.atlassian.com/static/rest/stash/3.6.0/stash-branch-utils-rest.html) require the ``DELETE`` request to contain a body. PainlessHttp supports this out-of-the-box
-
-```csharp
-  var client = new HttpClient("http://localhost:1337/rest/branch-utils/1.0/");
-  var requestBody = new
-  {
-    name = "/refs/heads/my-branch",
-    dryRun = false
-  };
-  var response = client.Delete<string>("projects/web/repos/painless/branches", requestBody);
-```
-
 ## Configuration
 ### Serializers
 Painless Http comes with a set of serializers for the standard formats (``application/xml``, ``application/json``). These serializers are registered in the client by default. This means that if you don't really care about how serialization is done, you can jump to the next section.
@@ -84,8 +63,7 @@ If you want to override serializers, just say so in the configuration object
 		{
 			Serializers = new List<IContentSerializer>
 			{
-				new Serializer<NewtonSoft>(ContentType.ApplicationJson),
-				new Serializer<DefaultXml>(ContentType.ApplicationXml)
+				PainlessJsonNet()
 			}
 		}
 	};
@@ -118,44 +96,23 @@ Painless Http wants to perform your requests as fast as possible. That's why all
 
   var xmlTomorrow = xmlSerializer.Serialize(tomorrow);
 ```
-#### The NewtonSoft serializer
-
-One of the most popular json serializers is Newtonsoft's JsonNet library. Here's how you configure it
-
-```csharp
- 	// create a Newtonsof configuration object
-	var newtonSoftSettings = new JsonSerializerSettings
-	{
-		ContractResolver = new CamelCasePropertyNamesContractResolver()
-	};
-
-	// register the change
-	NewtonSoft.UpdateSettings(new NewtonsoftSettings {Settings = newtonSoftSettings});
-
-	// instanciate
-	var serializer = new Serializer<NewtonSoft>(ContentType.ApplicationJson);
-
-	// Go crazy, oh baby!
-	var tomorrowJson = serializer.Serialize(tomorrow);
-	var tommorowObj = serializer.Deserialize<Todo>(tomorrowJson);
-```
 
 _Note that the Jsonsoft `ContentConverter is not part of the core lib. Download the nuget_ ``PainlessHttp.Serializers.JsonNet``.
 
 ### Content Negotiation
-If the request has a body, the default behaviour is to serialize it to json before sending the request. If you know right away that the endpoint you're requesting only supports another content type, you can change the default setting in the configuration object
-```csharp
-  var client = new HttpClient(new HttpClientConfiguration
-  {
-    BaseUrl = "http://localhost:1337/",
-    Advanced = { ContentType = ContentType.ApplicationJson }
-	});
-```
 If the server responds with status code ``UnsupportedMediaType`` or the Accept headers that does not contain the supplied content type, the default behaviour is to resend the request with supported content type (based on Accept headers). This behaviour can be overridden by supplying a content type in the request
 ```csharp
+  var config = new Configuration
+  {
+    BaseUrl = "http://localhost:1337/",
+    Advanced =
+    {
+      ContentNegotiation = true
+    }
+  };
+  var client = new HttpClient(config);
   var newTodo = new Todo { Description = "Write tests" };
-  var overrideType = ContentType.ApplicationJson;
-  var created = _client.PostAsync<string>("/api/todo", newTodo, null, overrideType);
+  var created = _client.PostAsync<string>("/api/todo", newTodo);
 ```
 
 ### Customizing request
@@ -182,6 +139,25 @@ Authentication is handled with ``System.Het.NetworkCredential``, and is register
 			Credentials = Credentials = new NetworkCredential("pardahlman", "password")
 		}
 	};
+```
+
+### If-Modified-Since Cache
+If the entities that you are requesting are large, and the server supports [If-Modified-Since Headers](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html), you can turn caching on the through PainlessHttp to make you application even faster. There are three cache types
+* ``NoCache`` (does nothing)
+* ``InMemoryCache`` (saves entities in working memory)
+* ``FileCache`` (saves entities on disk)
+
+This is done in the configuration view:
+```csharp
+  var cacheDirectory = Environment.CurrentDirectory;
+  var config = new Configuration
+  {
+  	BaseUrl = "http://localhost:1337/",
+  	Advanced =
+  	{
+  		ModifiedSinceCache = new FileCache(cacheDirectory)
+  	}
+  };
 ```
 
 ## Credits
