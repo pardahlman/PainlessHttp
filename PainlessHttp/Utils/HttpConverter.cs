@@ -49,6 +49,12 @@ namespace PainlessHttp.Utils
 
 		public static bool TryParseContentType(string type, out ContentType result)
 		{
+			result = Http.ContentType.Unknown;
+			if (string.IsNullOrWhiteSpace(type))
+			{
+				return false;
+			}
+
 			result = ContentTypes
 								.Where(ct => type.IndexOf(ct.Item2, StringComparison.InvariantCultureIgnoreCase) != -1)
 								.Select(ct => ct.Item1)

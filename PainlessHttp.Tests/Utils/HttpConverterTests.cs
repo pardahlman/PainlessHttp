@@ -84,5 +84,20 @@ namespace PainlessHttp.Tests.Utils
 			/* Assert */
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("NotKnownContentType")]
+		public void ShouldRetrunFalseIfStringCantBeParsedAsContentType(string contentTypeString)
+		{
+			/* Setup */
+			ContentType contentType;
+			
+			/* Test */
+			var result = HttpConverter.TryParseContentType(contentTypeString, out contentType);
+
+			/* Assert */
+			Assert.That(result, Is.False);
+		}
 	}
 }
