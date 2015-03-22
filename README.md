@@ -3,72 +3,60 @@
 _No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!_
 
 * async/sync ``GET``, ``POST``, ``PUT`` and ``DELETE``
-* Content negotiation, so that you don't have to mind about ContentTypes, AcceptHeaders and all that stuff
+* Content negotiation, so that you don't have to think about AcceptHeaders and all that stuff
 * Plugable ``If-Modified-Since`` caches for speeding up your application even more.
 * Authentication
-* Plugable serializers, use the built in onces, plugin your favorite onces (like ``PainlessHttp.Serializers.JsonNet``) or build one yourself
+* Plugable serializers - use defaults, additional ones (like ``PainlessHttp.Serializers.JsonNet``) or build one yourself
 * No external references to NuGets (_just Microsoft Core Libs!_)
 
-Getting typed metadata async has never been easier
+## Quick introduction
 
 ```csharp
-	var client = new HttpClient("http://localhost:1337/");
-	var response = await client.GetAsync<Todo>("api/todos/2");
-	Todo todo = response.Body;
-	Console.WriteLine("Mission of the day: {0}", todo.Description);
-```
-Store new data with ``POST``
+	//instanciate client
+	var client = new HttpClient("http://painless.pardahlman.se");
 
-```csharp
-	var client = new HttpClient("http://localhost:1337/");
-	var tomorrow = new Todo { Description = "Sleep in" };
-	Todo created = client.PostAsync<Todo>("api/todos", tomorrow).Result;
-	Console.WriteLine("Latest todo: {0}", created.Description);
-```
+	// create new entity
+	var tomorrow = new Todo { Description = "Sleep in", IsCompleted = false};
+	var created = await client.PostAsync<Todo>("/api/todos", tomorrow);
 
-... or update it with ``PUT``
-
-```csharp
-	// retrieve data
-	var client = new HttpClient(config);
-	var response = client.GetAsync<Todo>("api/todos/2").Result;
-	var completedTodo = response.Body;
+	// get it
+	var response = await client.GetAsync<Todo>("/api/todos/1");
+	var existing = response.Body;
 
 	// update it
-	completedTodo.IsCompleted = true;
-	client.Put<string>("api/todos", completedTodo);
-```
+	existing.IsCompleted = true;
+	var updated = await client.PutAsync<Todo>("/api/todos/1", existing);
 
-``DELETE`` works the same way
-
-```csharp
-	var client = new HttpClient("http://localhost:1337/");
-	var response = client.DeleteAsync<string>("api/todos/2").Result;
-	if (response.StatusCode == HttpStatusCode.OK)
+	// delete it
+	var deleted = await client.DeleteAsync<string>("/api/todos/1");
+	if (deleted.StatusCode == HttpStatusCode.OK)
 	{
-		Console.WriteLine("Todo successfully deleted");
+		Console.Write("Successfully deleted todo");
 	}
 ```
-
 ## Configuration
+Want to have greater control over how things are done? Just instanciate the client with a ``Configuration`` object, and you'll have the posibility to change just about everything: 
+```csharp
+  //create config
+  var config = new Configuration
+  {
+    BaseUrl = "http://painless.pardahlman.se",
+    Advanced =
+    {
+      Serializers = new List { new PainlessJsonNet() },
+      ModifiedSinceCache = new FileCache(cacheDirectory: Environment.CurrentDirectory),
+      RequestTimeout = new TimeSpan(days:0, hours:0, minutes:0, seconds:2),
+      ContentNegotiation = true,
+      Credentials = new NetworkCredential("pardahlman", "strong-password"),
+      WebrequestModifier = request => request.Headers.Add("X-Additional-Header", "Each request")
+    }
+  };
+  var client = new HttpClient(config);
+```
 ### Serializers
 Painless Http comes with a set of serializers for the standard formats (``application/xml``, ``application/json``). These serializers are registered in the client by default. This means that if you don't really care about how serialization is done, you can jump to the next section.
 
 If you want to override serializers, just say so in the configuration object
-```csharp
-  var config = new HttpClientConfiguration
-	{
-		BaseUrl = "http://localhost:1337/",
-		Advanced =
-		{
-			Serializers = new List<IContentSerializer>
-			{
-				PainlessJsonNet()
-			}
-		}
-	};
-  var client = new HttpClient(config);
-```
 
 There are more ways to create customized serializers.
 
