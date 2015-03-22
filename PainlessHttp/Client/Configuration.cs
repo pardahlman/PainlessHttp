@@ -32,6 +32,10 @@ namespace PainlessHttp.Client
 
 			public IModifiedSinceCache ModifiedSinceCache { get; set; }
 
+			/// <summary>
+			/// The time to wait for a response before timing out. Defaults to 10 seconds
+			/// </summary>
+			public TimeSpan RequestTimeout { get; set; }
 			public Action<WebRequest> WebrequestModifier { get; set; }
 			public NetworkCredential Credentials { get; set; }
 
@@ -41,6 +45,7 @@ namespace PainlessHttp.Client
 				ModifiedSinceCache = new NoCache();
 				ContentNegotiation = true;
 				WebrequestModifier = (req) => { };
+				RequestTimeout = new TimeSpan(days: 0, hours:0, minutes:0, seconds:10);
 			}
 		}
 	}

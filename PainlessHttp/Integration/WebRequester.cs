@@ -2,13 +2,16 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using PainlessHttp.Client;
 using PainlessHttp.Http;
 using PainlessHttp.Http.Contracts;
 using PainlessHttp.Utils;
 using HttpWebResponse = PainlessHttp.Http.HttpWebResponse;
+using Timer = System.Timers.Timer;
 
 namespace PainlessHttp.Integration
 {
@@ -23,6 +26,7 @@ namespace PainlessHttp.Integration
 		private Func<HttpWebRequest, Task> _payloadModifilerAsync;
 		private Func<ContentType> _contentTypeProvider;
 		private readonly IContentNegotiator _contentNegotiator;
+		private const string _timeOutResponse = "Oh noes! The request for {0} timed out after {1} ms. The time out can be increased by configuring the client's Request time-out at Configuration.Advanced.RequestTimeout.";
 
 		public WebRequester(Configuration config)
 		{
@@ -97,23 +101,42 @@ namespace PainlessHttp.Integration
 			return rawResponse;
 		}
 		
-		private static async Task<IHttpWebResponse> GetResponseAsync(WebRequest rawRequest)
+		private async Task<IHttpWebResponse> GetResponseAsync(WebRequest rawRequest)
 		{
+			var timer = new Timer(_config.Advanced.RequestTimeout.TotalMilliseconds);
+			timer.Elapsed += (sender, args) => rawRequest.Abort();
 			try
 			{
-				var response = await Task<WebResponse>.Factory.FromAsync(rawRequest.BeginGetResponse, rawRequest.EndGetResponse, rawRequest);
-				return new HttpWebResponse((System.Net.HttpWebResponse)response);
+				timer.Start();
+				var response =
+					await Task<WebResponse>.Factory.FromAsync(rawRequest.BeginGetResponse, rawRequest.EndGetResponse, rawRequest);
+				return new HttpWebResponse((System.Net.HttpWebResponse) response);
 			}
 			catch (WebException e)
 			{
-				return new HttpWebResponse((System.Net.HttpWebResponse)e.Response);
+				if (e.Status == WebExceptionStatus.RequestCanceled)
+				{
+					var timeoutResponse = new HttpWebResponse
+					{
+						ContentType = ContentTypes.TextPlain
+					};
+					timeoutResponse.SetResponseStream(new MemoryStream(Encoding.UTF8.GetBytes(string.Format(_timeOutResponse, rawRequest.RequestUri.AbsolutePath, _config.Advanced.RequestTimeout.TotalMilliseconds))));
+					return timeoutResponse;
+				}
+				return new HttpWebResponse((System.Net.HttpWebResponse) e.Response);
+			}
+			finally
+			{
+				timer.Close();
+				timer.Stop();
+				timer.Dispose();
 			}
 		}
 
 		private async Task<HttpWebRequest> PrepareAsync()
 		{
 			var req = _requestInit();
-
+			
 			// Overrideable props up here
 			req.AllowAutoRedirect = true;
 			req.PreAuthenticate = true;
