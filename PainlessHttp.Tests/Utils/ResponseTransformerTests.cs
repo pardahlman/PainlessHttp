@@ -88,5 +88,36 @@ namespace PainlessHttp.Tests.Utils
 			/* Assert */
 			usedSerializer.VerifyAll();
 		}
+
+		[Test]
+		public void Should_Try_To_Get_Content_Type_From_Body()
+		{
+			/* Setup */
+			_rawResponse
+				.Setup(r => r.ContentType)
+				.Returns(ContentTypes.TextHtml);
+
+			/* Test */
+			var contentType = _transformer.ExtractContentTypeFromResponse(_rawResponse.Object);
+
+			/* Assert */
+			Assert.That(contentType, Is.EqualTo(ContentType.TextHtml));
+		}
+
+		[Test]
+		public void Should_Get_Content_Type_From_Headers_If_Body_Does_Not_Contain_Any_Content_Type()
+		{
+			/* Setup */
+			var responseHeaders = new WebHeaderCollection { { HttpResponseHeader.ContentType, ContentTypes.TextPlain } };
+			_rawResponse
+				.Setup(r => r.Headers)
+				.Returns(responseHeaders);
+
+			/* Test */
+			var contentType = _transformer.ExtractContentTypeFromResponse(_rawResponse.Object);
+
+			/* Assert */
+			Assert.That(contentType, Is.EqualTo(ContentType.TextPlain));
+		}
 	}
 }

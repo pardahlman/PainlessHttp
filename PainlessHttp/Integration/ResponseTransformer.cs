@@ -38,7 +38,7 @@ namespace PainlessHttp.Integration
 
 		private T Deserialize<T>(string body, IHttpWebResponse raw) where T : class
 		{
-			var contentType = ExtractContentTypeFromHeaders(raw.Headers);
+			var contentType = ExtractContentTypeFromResponse(raw);
 			var serializer = _serializers.FirstOrDefault(s => s.ContentType.Contains(contentType));
 			if (serializer == null)
 			{
@@ -53,8 +53,15 @@ namespace PainlessHttp.Integration
 			return typedBody;
 		}
 
-		private ContentType ExtractContentTypeFromHeaders(WebHeaderCollection headers)
+		internal ContentType ExtractContentTypeFromResponse(IHttpWebResponse response)
 		{
+			ContentType result;
+			if (HttpConverter.TryParseContentType(response.ContentType, out result))
+			{
+				return result;
+			}
+
+			var headers = response.Headers;
 			const ContentType fallback = ContentType.ApplicationJson;
 			if (headers == null)
 			{
