@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using PainlessHttp.Cache;
-using PainlessHttp.Http;
 using PainlessHttp.Serializers.Contracts;
 
 namespace PainlessHttp.Client
@@ -26,16 +25,25 @@ namespace PainlessHttp.Client
 
 			/// <summary>
 			/// Specify if Content Negotiation should be performed. If set to true, a request with a body will be resent
-			/// if the server does not support the currently content type.
+			/// if the server does not support the current content type.
 			/// </summary>
 			public bool ContentNegotiation { get; set; }
 
+			/// <summary>
+			/// The Cache to be used for 'If-Modified-Since' and 'Last-Modified' header.
+			/// Default to a 'NoCache' Implementation, that does not perform any caching.
+			/// </summary>
 			public IModifiedSinceCache ModifiedSinceCache { get; set; }
 
 			/// <summary>
-			/// The time to wait for a response before timing out. Defaults to 10 seconds
+			/// The time to wait for a response before timing out. Defaults to 10 seconds.
 			/// </summary>
 			public TimeSpan RequestTimeout { get; set; }
+
+			/// <summary>
+			/// Action to be made on the underlying WebRequest before it is sent.
+			/// E.g. request => request.Headers.Add("X-Additional-Header", "Additional Value")
+			/// </summary>
 			public Action<WebRequest> WebrequestModifier { get; set; }
 			public NetworkCredential Credentials { get; set; }
 
