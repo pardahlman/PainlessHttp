@@ -160,6 +160,18 @@ This is done in the configuration view:
   };
 ```
 
+### Request Timeout
+There is no point in waiting for a response forever. By default, The Painless HttpClient defaults to a 10 second Request Timeout. If you want to change this, just do so in the configuration
+```csharp
+  var config = new Configuration
+  {
+  	BaseUrl = "http://localhost:1337/",
+  	Advanced =
+  	{
+  		RequestTimeout = new TimeSpan(days:0, hours:0, minutes:0, seconds:2)
+  	}
+  };
+```
 ## Credits
 
 Author: Pär Dahlman

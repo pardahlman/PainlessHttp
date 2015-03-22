@@ -28,7 +28,7 @@
   <h2>New version available!</h2>
   <div class="nuget-badge">
 	<p>
-		<code>PM> Install-Package PainlessHttp -Version 0.11.0</code>
+		<code>PM> Install-Package PainlessHttp -Version 0.11.2</code>
 	</p>
 </div>
 </div>
@@ -66,6 +66,27 @@
 		Console.Write("Successfully deleted todo");
 	}
 </code></pre>
+
+Want to have greater control over how things are done? Just instanciate the client with a <code>Configuration</code> object, and you'll have the posibility to change just about everything:
+<br/>
+<br/>
+<pre><code class="cs">  //create config
+  var config = new Configuration
+  {
+    BaseUrl = "http://painless.pardahlman.se",
+    Advanced =
+    {
+      Serializers = new List<IContentSerializer> { new PainlessJsonNet() },
+      ModifiedSinceCache = new FileCache(cacheDirectory: Environment.CurrentDirectory),
+      RequestTimeout = new TimeSpan(days:0, hours:0, minutes:0, seconds:2),
+      ContentNegotiation = true,
+      Credentials = new NetworkCredential("pardahlman", "strong-password"),
+      WebrequestModifier = request => request.Headers.Add("X-Additional-Header", "For each request")
+    }
+  };
+  var client = new HttpClient(config);
+</code></pre>
+
 
 		</div>
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
