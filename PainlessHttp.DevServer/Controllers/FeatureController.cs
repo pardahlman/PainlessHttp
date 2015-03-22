@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Web;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Routing;
 using PainlessHttp.DevServer.Data;
 using PainlessHttp.DevServer.Model;
 using PainlessHttp.Http;
@@ -156,6 +155,23 @@ namespace PainlessHttp.DevServer.Controllers
 			return response;
 		}
 
+		#endregion
+
+		#region Feature: Request Timeout
+		[Route("api/timeout")]
+		[HttpGet]
+		public async Task<HttpResponseMessage> GetWithTimeout(int delay = 0)
+		{
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			var waitForDelay = new TaskCompletionSource<bool>();
+			var timer = new Timer(state => waitForDelay.SetResult(true), null, delay, int.MaxValue);
+			await waitForDelay.Task;
+			stopWatch.Stop();
+			var response = Request.CreateResponse(HttpStatusCode.OK);
+			response.Content = new StringContent("Performed request in " + stopWatch.ElapsedMilliseconds + " ms.", Encoding.UTF8, ContentTypes.TextPlain);
+			return response;
+		}
 		#endregion
 	}
 }
