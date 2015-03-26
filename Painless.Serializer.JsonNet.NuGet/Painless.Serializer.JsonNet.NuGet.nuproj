@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>Painless.Serializer.JsonNet</Id>
-    <Version>0.11.0</Version>
+    <Version>0.11.1</Version>
     <Title>PainlessHttp: Json.Net Serializer</Title>
     <Authors>par.dahlman</Authors>
     <Owners>par.dahlman</Owners>
