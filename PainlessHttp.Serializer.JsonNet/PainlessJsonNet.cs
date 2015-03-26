@@ -15,6 +15,7 @@ namespace PainlessHttp.Serializer.JsonNet
 		{
 			_serialize = serialize ?? JsonConvert.SerializeObject;
 			_deserialize = deserialize ?? JsonConvert.DeserializeObject;
+			ContentType = new List<ContentType> {Http.ContentType.ApplicationJson};
 		}
 		public IEnumerable<ContentType> ContentType { get; private set; }
 		
