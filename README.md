@@ -1,6 +1,6 @@
 # PainlessHttp
 
-_No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it won’t ever give you any headache!_
+_No external libraries! No over engineered method signatures! No uber verbose setup! Just a HTTP client that is so easy to use that it wonâ€™t ever give you any headache!_
 
 * async/sync ``GET``, ``POST``, ``PUT`` and ``DELETE``
 * Content negotiation, so that you don't have to think about AcceptHeaders and all that stuff
@@ -12,7 +12,7 @@ _No external libraries! No over engineered method signatures! No uber verbose se
 ## Quick introduction
 
 ```csharp
-	//instanciate client
+	//instantiate client
 	var client = new HttpClient("http://painless.pardahlman.se");
 
 	// create new entity
@@ -35,7 +35,7 @@ _No external libraries! No over engineered method signatures! No uber verbose se
 	}
 ```
 ## Configuration
-Want to have greater control over how things are done? Just instanciate the client with a ``Configuration`` object, and you'll have the posibility to change just about everything: 
+Want to have greater control over how things are done? Just instantiate the client with a ``Configuration`` object, and you'll have the posibility to change just about everything: 
 ```csharp
   //create config
   var config = new Configuration
@@ -162,4 +162,4 @@ There is no point in waiting for a response forever. By default, The Painless Ht
 ```
 ## Credits
 
-Author: Pär Dahlman
+Author: PÃ¤r Dahlman
