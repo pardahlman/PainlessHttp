@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using System.Dynamic;
+using NUnit.Framework;
 using PainlessHttp.Utils;
 
 namespace PainlessHttp.Tests.Utils
@@ -45,6 +47,23 @@ namespace PainlessHttp.Tests.Utils
 		{
 			/* Setup */
 			var query = new {firstParam = "firstValue", secondParam = "secondValue"};
+			var expected = string.Format("{0}?firstParam=firstValue&secondParam=secondValue", _baseUrl);
+
+			/* Test */
+			var result = _builder.Build(string.Empty, query);
+
+			/* Assert */
+			Assert.That(result, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void Should_Add_Query_Parameters_Even_If_They_Are_Provided_As_Dictionary()
+		{
+			/* Setup */
+			IDictionary<string, object> query = new ExpandoObject();
+			query["firstParam"] = "firstValue";
+			query["secondParam"] = "secondValue";
+
 			var expected = string.Format("{0}?firstParam=firstValue&secondParam=secondValue", _baseUrl);
 
 			/* Test */

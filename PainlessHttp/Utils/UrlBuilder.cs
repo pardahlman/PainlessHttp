@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -9,6 +10,7 @@ namespace PainlessHttp.Utils
 	public class UrlBuilder
 	{
 		private readonly string _baseUrl;
+		private static readonly Type expandoType = typeof (ExpandoObject);
 
 		public UrlBuilder(string baseUrl)
 		{
@@ -40,6 +42,16 @@ namespace PainlessHttp.Utils
 		private static string CreateQueryString(object query)
 		{
 			var queryType = query.GetType();
+
+			if (queryType == expandoType)
+			{
+				var dictionary = (IDictionary<string, object>) query;
+				return dictionary.Keys
+					.Select(k => k + "=" + dictionary[k])
+					.Aggregate((accumilated, delta) => string.Format("{0}&{1}", accumilated, delta))
+					.Insert(0, "?");
+			}
+
 			var properties = new List<PropertyInfo>(queryType.GetProperties());
 			
 			var queryString = properties
