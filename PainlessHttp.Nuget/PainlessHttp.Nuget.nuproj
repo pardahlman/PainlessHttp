@@ -23,7 +23,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>PainlessHttp</Id>
-    <Version>0.11.2</Version>
+    <Version>0.11.3</Version>
     <Title>PainlessHttp</Title>
     <Authors>par.dahlman</Authors>
     <Owners>par.dahlman</Owners>
