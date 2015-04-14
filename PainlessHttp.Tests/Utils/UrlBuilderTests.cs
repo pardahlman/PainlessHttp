@@ -57,6 +57,19 @@ namespace PainlessHttp.Tests.Utils
 		}
 
 		[Test]
+		public void Should_Not_Add_Any_Query_If_Object_Is_Empty_ExpandoObject()
+		{
+			/* Setup */
+			IDictionary<string, object> query = new ExpandoObject();
+
+			/* Test */
+			var result = _builder.Build(string.Empty, query);
+
+			/* Assert */
+			Assert.That(result, Is.EqualTo(_baseUrl));
+		}
+
+		[Test]
 		public void Should_Add_Query_Parameters_Even_If_They_Are_Provided_As_Dictionary()
 		{
 			/* Setup */

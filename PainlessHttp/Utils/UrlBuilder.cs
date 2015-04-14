@@ -46,6 +46,10 @@ namespace PainlessHttp.Utils
 			if (queryType == expandoType)
 			{
 				var dictionary = (IDictionary<string, object>) query;
+				if (!dictionary.Keys.Any())
+				{
+					return string.Empty;
+				}
 				return dictionary.Keys
 					.Select(k => k + "=" + dictionary[k])
 					.Aggregate((accumilated, delta) => string.Format("{0}&{1}", accumilated, delta))
