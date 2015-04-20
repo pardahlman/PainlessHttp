@@ -44,7 +44,7 @@ namespace PainlessHttp.Client
 			/// Action to be made on the underlying WebRequest before it is sent.
 			/// E.g. request => request.Headers.Add("X-Additional-Header", "Additional Value")
 			/// </summary>
-			public Action<WebRequest> WebrequestModifier { get; set; }
+			public Action<HttpWebRequest> WebrequestModifier { get; set; }
 			public NetworkCredential Credentials { get; set; }
 
 			public AdvancedConfiguration()
