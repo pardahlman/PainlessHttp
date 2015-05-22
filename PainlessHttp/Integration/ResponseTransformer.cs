@@ -49,8 +49,21 @@ namespace PainlessHttp.Integration
 			{
 				return body as T;
 			}
-			var typedBody = serializer.Deserialize<T>(body);
-			return typedBody;
+			try
+			{
+				var typedBody = serializer.Deserialize<T>(body);
+				return typedBody;
+			}
+			catch (Exception e)
+			{
+				if ((int)raw.StatusCode < 400)
+				{
+					// 2XX or 3XX responses should be serializable. throw to make the user aware of the problem.
+					throw;
+				}
+				// the response is within the faulty range, no need to throw on serialization
+				return default(T);
+			}
 		}
 
 		internal ContentType ExtractContentTypeFromResponse(IHttpWebResponse response)

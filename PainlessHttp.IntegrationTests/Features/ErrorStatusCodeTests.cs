@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using PainlessHttp.Client;
 using PainlessHttp.DevServer.Model;
 
@@ -31,6 +32,17 @@ namespace PainlessHttp.IntegrationTests.Features
 
 			/* Assert */
 			Assert.That(response.RawBody, Is.EqualTo(expectedMessage));
+		}
+
+		[Test]
+		public void Should_Throw_Exception_If_Response_Is_In_Acepted_Range_But_Not_Serializable()
+		{
+			/* Setup */
+			const string expectedMessage = "Request successful";
+
+			/* Test */
+			/* Assert */
+			Assert.Throws<AggregateException>(() => _client.Get<Todo>("api/error-code", new { message = expectedMessage, statusCode = 200 }));
 		}
 	}
 }

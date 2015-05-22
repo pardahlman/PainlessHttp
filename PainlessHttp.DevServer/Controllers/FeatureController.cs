@@ -152,6 +152,7 @@ namespace PainlessHttp.DevServer.Controllers
 				StatusCode = httpStatusCode,
 				Content = new StringContent(message)
 			};
+			response.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 			return response;
 		}
 
