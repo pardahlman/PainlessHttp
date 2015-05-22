@@ -12,7 +12,7 @@ namespace PainlessHttp.Tests.Utils
 			public void ShouldReturnExpectedAgentName()
 			{
 				/* Setup */
-				const string version = "0.11.5.0";
+				const string version = "0.11.6.0";
 				var expected = string.Format("Painless Http Client {0}", version);
 				/* Test */
 				var agent = ClientUtils.GetUserAgent();
